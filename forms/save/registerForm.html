@@ -1,0 +1,202 @@
+<form method="POST" name="form">
+	<fieldset>
+		<legend>Registration</legend>
+		<table style="margin: auto;">
+			<tr>
+				<td>
+					<table>
+						<tr>
+							<th colspan="2">
+								<center>
+									<p>Login informations <b style="color: red">(required)</b></p>
+								</center>
+							</th>
+						</tr>
+						<tr>
+							<td>
+								<p>Nickname</p> 
+							</td>
+							<td>
+								<input type="text" name="newNickname" id="newNickname" onchange="document.getElementById('register_button').setAttribute('disabled','true')" required>
+								<img src="images/icons/checking.png" class="checkIcon" id="nameCheck" title="Enter a username of at least 5 characters">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p>E-mail address</p>
+							</td>
+							<td>
+								<input type="text" name="newEmail" onchange="document.getElementById('register_button').setAttribute('disabled','true')" required>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p>Password</p>
+							</td>
+							<td>
+								<input type="password" name="newPass" onchange="document.getElementById('register_button').setAttribute('disabled','true')" required>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p>Confirm password</p> 
+							</td>
+							<td>
+								<input type="password" name="newPassConfirm" onchange="document.getElementById('register_button').setAttribute('disabled','true')" required>
+							</td>
+						</tr>
+						<tr>
+							<th colspan="2">
+								<p>Other informations</p>
+							</th>
+						</tr>
+						<tr>
+							<td>
+								<p>Country</p>
+							</td>
+							<td>
+								<select name="newCountry" onchange="document.form.submit.setAttribute('disabled','true')">
+									<option value="">---Undefined---</option>
+									<option value="France">France</option>
+									<option value="England">England</option>
+									<option value="Canada">Canada</option>
+									<option value="USA">USA</option>
+									<option value="Elsewhere">Elsewhere</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p>Birthdate</p>
+							</td>
+							<td>
+								<select id="birth_day" name="birth_day" onchange="document.form.submit.setAttribute('disabled','true')">
+									<option value="" selected>..</option>
+									<script type="text/javascript">
+										for(var i = 1 ; i <= 31 ; i++) {
+									    	if (i < 10) document.write("<option value=\""+i+"\">0"+i+"</option>");
+									    	else document.write("<option value=\""+i+"\">"+i+"</option>");
+									    }
+									</script>
+								</select>
+								<select id="birth_month" name="birth_month" onchange="document.form.submit.setAttribute('disabled','true')">
+									<option value="" selected>..</option>
+									<script type="text/javascript">
+										for(var i = 1 ; i <= 12 ; i++) {
+									    	if (i < 10) document.write("<option value=\""+i+"\">0"+i+"</option>");
+									    	else document.write("<option value=\""+i+"\">"+i+"</option>");
+									    }
+									</script>
+								</select>
+								
+								<select name="birth_year" onchange="document.form.submit.setAttribute('disabled','true')">
+									<option value="" selected>..</option>
+									<script>
+										var d = new Date;
+		                              	var ageMini = 1;
+		                              	var ageMaxi = 100;
+		                              	for(var i=d.getFullYear()-ageMini ; i > d.getFullYear() - ageMaxi ; i--) 
+		                              	{
+		                              		document.write("<option value=\""+i+"\">"+i+"</option>");
+		                              	}
+		                            </script>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td>
+					<table>
+						<tr>
+							<th>As a member you can</th>
+						</tr>
+						<tr>
+							<td>
+								<ul>
+									<li><p>Post in the forum</p></li>
+									<li><p>Help other users</p></li>
+									<li><p>Report undesirable posts</p></li>
+									<li><p>Give advices to improve the website</p></li>
+								</ul>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Use conditions
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<textarea readonly rows="9" cols="45" style="resize: none;">
+		Use conditions :
+
+		...
+
+		I don't want to write a lot of line because i'm pretty sure you'll never read it...
+
+		So please accept and I leave you alone...
+								</textarea>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="checkbox" name="rulesConfirm" onchange="document.form.submit.setAttribute('disabled','true')">
+								I accept use conditions
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<hr>
+		<center>
+			<input type="button" name="check" value="Check" onclick="checkRegisterForm()">
+			<input type="reset" value="Reset">
+			<input type="submit" id="register_button" name="submit" value="Register" disabled>
+		</center>
+		<div id="formError">
+
+		</div>
+	</fieldset>
+</form>
+
+<script type="text/javascript">
+
+	$newNickname = $('#newNickname');
+
+	$newNickname.keyup(function() {
+		if($(this).val().length < 5){
+			$("#nameCheck").attr('src', 'images/icons/denied.png');
+			$("#nameCheck").attr('title', 'Enter a username of at least 5 characters');	
+		}
+		else {
+			$(this).css("backgroundColor","yellow");
+		}
+
+	});
+
+	$newNickname.change(function() {
+		$("#nameCheck").attr('src', 'images/icons/loading.gif');
+		$.post(
+            '../functionTest.php', // Un script PHP que l'on va créer juste après
+            {
+                type : "nameAvailable",  // Nous récupérons la valeur de nos input que l'on fait passer à connexion.php
+                name : $("#newNickname").val()
+            },
+            function(data){
+ 
+                if(data == 'Available'){
+ 					$("#nameCheck").attr('src', 'images/icons/approved.png');
+ 					$("#nameCheck").attr('title', '');
+                }
+                else if(data == 'Taken'){
+                    $("#nameCheck").attr('src', 'images/icons/warning.png');
+                    $("#nameCheck").attr('title', 'The username is taken');
+                }
+         
+            },
+            'text'
+        );
+	});
+
+</script>

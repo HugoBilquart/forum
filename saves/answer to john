@@ -1,0 +1,3 @@
+<p>Hi John,</p>
+<p>If you're on ubuntu, you can use bind9. There's a lot of instruction to follow, so I recommend you to search it on internet.</p>
+<p>Install bind9 with : apt-get install bind9</p>

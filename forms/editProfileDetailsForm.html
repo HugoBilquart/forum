@@ -1,0 +1,100 @@
+<tr>
+	<th colspan="4" class="editProfileForm">
+		<center>
+			<p style="text-align:center;">
+				Edit profile page
+			</p>
+		</center>
+	</th>
+</tr>
+<tr>
+	<td> 
+		- Country
+	</td>
+ 	<td>
+ 		<select name="editCountry">
+			<option value="" selected>No change</option>
+			<option value="France">France</option>
+			<option value="England">England</option>
+			<option value="Canada">Canada</option>
+			<option value="USA">USA</option>
+			<option value="Elsewhere">Elsewhere</option>
+			<option value="System">System</option>
+			<option value="delete">DELETE</option>
+		</select>
+	</td>
+
+	 <td>
+	 	<li>
+	 		<p>
+	 			Birthdate (... = no change)
+	 		</p>
+	 	</li>
+	 </td>
+	 <td>
+		<select id="birth_day" class="birthday" name="birth_day">
+			<option value="" selected>...</option>
+			<script type="text/javascript">
+				for(var i = 1 ; i <= 31 ; i++) {
+			    	if (i < 10) document.write("<option value=\""+i+"\">0"+i+"</option>");
+			    	else document.write("<option value=\""+i+"\">"+i+"</option>");
+			    }
+			</script>
+			<option value="del">DELETE</option>
+		</select>
+		<select id="birth_month" class="birthday" name="birth_month">
+			<option value="" selected>...</option>
+			<script type="text/javascript">
+				for(var i = 1 ; i <= 12 ; i++) {
+			    	if (i < 10) document.write("<option value=\""+i+"\">0"+i+"</option>");
+			    	else document.write("<option value=\""+i+"\">"+i+"</option>");
+				}
+			</script>
+			<option value="del">DELETE</option>
+		</select>
+			
+		<select id="birth_year" name="birth_year" class="birthday">
+			<option value="" selected>...</option>
+			<script>
+				var d = new Date;
+              	var ageMini = 1;
+              	var ageMaxi = 100;
+              	for(var i=d.getFullYear()-ageMini ; i > d.getFullYear() - ageMaxi ; i--) 
+              	{
+              		document.write("<option value=\""+i+"\">"+i+"</option>");
+              	}
+            </script>
+            <option value="del">DELETE</option>
+		</select>
+	</td>
+</tr>
+
+<script type="text/javascript">
+	
+	$('.birthday').change(function(){
+
+		$birth_day = $('#birth_day').val();
+		$birth_month = $('#birth_month').val();
+
+		if($('#birth_day').val() && $('#birth_day').val() < 10) {
+			$birth_day = '0'+ $birth_day;
+		}
+
+		if($('#birth_month').val() && $('#birth_month').val() < 10) {
+			$birth_month = '0'+ $birth_month;
+		}
+
+		$birthday = $birth_day + '/' + $birth_month + '/' + $('#birth_year').val();
+		console.log($birthday);
+
+		if($birthday == '//' || $birthday.match(/^([0-2^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/) || $birthday == "del/del/del") {
+			$('#submit').removeAttr('disabled');
+		}
+		else {
+			$('#submit').attr('disabled','true');
+		}
+
+	});
+
+
+</script>

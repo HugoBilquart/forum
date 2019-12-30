@@ -1,0 +1,113 @@
+<tr>
+	<th colspan="2" class="editProfileForm">
+		<p>
+			Edit login page
+		</p>
+		<span class="no_birthday">
+			If you don't want to edit an item, write NOCHANGE
+		</span>
+	</th>
+</tr>
+<tr>
+	<td class="editProfileForm">
+		<p>New username</p>  
+		<input type="text" name="editUsername" id="editUsername">
+	</td>
+
+	<td class="editProfileForm">
+		<p>New email</p>
+		<input type="text" name="editEmail" id="editEmail">
+	</td>
+</tr>
+
+<tr>
+	<td colspan="2" style="margin: auto; text-align: center;">
+		<input type="button" name="checkButton" value="Check" id="checkForm">
+		<input type="submit" name="submit" id="submit" value="Confirm new account details" disabled>
+	</td>
+</tr>
+
+<tr>
+	<td colspan="2">
+		<div id="checkErrors"></div>
+	</td>
+</tr>
+
+
+
+
+<script type="text/javascript">
+	$editUsername = $('#editUsername');
+	$editEmail = $('#editEmail');
+
+	var mailPattern = new RegExp ('^[A-Za-z0-9._-]+@[a-z0-9.-]{2,}[.][a-z]{2,5}$');
+	var errorArea = document.getElementById('checkErrors');
+	var errCount;
+
+
+	$('#checkForm').click(function(){
+		errCount = 0;
+		errorArea.innerHTML = '';
+		if($editUsername.val() != 'NOCHANGE') {
+			if($editUsername.val().length >= 4) {
+				$.post(
+					'script/checkUsername.php',
+					{
+						new_username : $editUsername.val()
+					},
+
+					function(data){
+						if(data == 'taken'){
+							errorArea.innerHTML += `<p class="loginFailed">The username is taken</p>`;
+							errCount++;
+						}
+					},
+					'text'
+				);
+			}
+			else {
+				errorArea.innerHTML += `<p class="loginFailed">The username is too short (at least 4 characters)</p>`;
+				errCount++;
+			}
+		}
+
+		if($editEmail.val() != 'NOCHANGE') {
+			if(!mailPattern.test($editEmail.val())) {
+				errorArea.innerHTML += `<p class="loginFailed">Your email address is improper (example@domain.com)</p>`;
+				errCount++;
+			}
+			else {
+				$.post(
+					'script/checkEmail.php',
+					{
+						new_email : $editEmail.val()
+					},
+					function(data){
+						if(data == 'used'){
+							errorArea.innerHTML += `<p class="loginFailed">This email address is already used</p>`;
+							errCount++;
+						}
+					},
+					'text'
+				);
+			}
+		}
+		console.log(errCount);
+		if(errCount > 0) {
+			$('#submit').attr('disabled','true');
+		}
+		else {
+			$('#submit').removeAttr('disabled');
+		}
+	});
+
+	$('input').keyup(function(){
+		$('#submit').attr('disabled','true');
+	});
+
+	$('input').change(function(){
+		$('#submit').attr('disabled','true');
+	});
+
+</script>
+

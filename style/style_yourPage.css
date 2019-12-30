@@ -1,0 +1,66 @@
+/*
+	This stylesheet is used for personnal page and profile page
+*/
+
+table.personal_page {
+	margin: 			auto;
+	border:				solid 1px white;
+}
+
+img.profile_user_pic:hover {
+	opacity:				0.3; 
+}
+
+th.personal_page {
+	border:				solid 1px white;
+	border-collapse: 	none;
+	margin: 			auto;
+}
+
+td.personal_page {
+	padding: 		10px;
+}
+
+td#editProfileButtons {
+	text-align: 	center;
+	padding: 		30px;
+}
+
+td#personal_page_pp {
+	border: 		solid white 1px;
+}
+
+span.name {
+	font-size: 		50px;
+	font-weight: 	bold;
+}
+
+span.role {
+	font-size: 		20px;
+	font-weight: 	bold;
+}
+
+a#username {
+	cursor: 		pointer;
+}
+
+.emptyDetail {
+	color: 			rgba(120,120,120,0.5);
+}
+
+img.profile_user_pic {
+	height:						300px; 
+	width:						300px;
+	z-index: 					1;
+	-moz-transition-property:   opacity;
+	transition-duration: 		1s;
+	cursor: 					pointer;
+}
+
+textarea.biography {
+	resize: 		none;
+}
+
+table#video_commands {
+	display: none;
+}

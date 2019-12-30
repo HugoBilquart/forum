@@ -1,0 +1,467 @@
+body {
+	background: 				url(../images/wallpaper_default.png);
+    display:    cover;
+	font-family:				index;
+	color: 						white;
+	margin: 					auto;
+}
+
+#table {
+	width: 						80%;
+	height: 					90%;
+	margin: 					auto;
+	text-indent: 				10px;
+}
+
+table#session_data {
+	text-align:					left;
+}
+
+tr#top {
+	background: 				#7c7c7c;
+	color: 						red;
+	text-align:					right;
+}
+
+th.logoArea {
+	background-image: 			url('../images/website_logo_edit_bis.png') ;
+	background-repeat: 			no-repeat;
+	background-size: 			450px 150px;
+	width: 						446px;
+	height: 					148px;
+}
+
+th.top {
+	color:						red;
+	float: 						right;
+	padding-right: 				10px;
+	text-align:					right;
+
+}
+
+td {
+	background-color: 			#3B3A3F;
+}
+
+hr {
+	margin-left: 5px;
+	width: 80%;
+	height: 2px;
+	border-radius: 30px;
+	background-color: white;
+}
+
+a {
+	color: 						#83caf7;
+}
+
+a.userLink {
+	color: 						#83caf7;
+	text-decoration:			none;
+	transition-duration:		0.7s;
+}
+
+a.userLink:hover {
+	color: 						cyan;
+	text-shadow: 				1px 3px 3px cyan;  
+
+}
+
+a.linkLogin {
+	color: 						#00aaff;
+	font-weight: 				bold;
+	text-decoration: 			none;
+	-moz-transition-property:   color;
+	-moz-transition-property:   text-shadow;
+    -moz-transition-duration:   1s;
+}
+
+a.linkLogin:hover {
+	color: 						#00ffaa;
+	text-shadow:				1px 2px 2px rgba(0,255,0,0.5);
+}	
+
+li.results {
+	list-style-type: none;
+}
+
+
+a#logout_link {
+	color: 						#6ba3c6;
+	text-shadow: 				1px 3px 3px #54788e; 
+	text-decoration:			none;
+	transition-property: 		color,text-shadow;
+	transition-duration: 		0.7s;
+}
+
+a#logout_link:hover {
+	color: 						#e30000;
+	text-shadow: 				1px 3px 3px #b50000;
+}
+
+.loginDone {
+	color:						green;
+	font-weight: 				bold;
+}
+
+.loginFailed {
+	color: 						red;
+	font-weight: 				bold;
+}
+
+img.user_pic {
+	margin: 					10px;
+	height: 					200px;
+	width: 						200px;
+}
+
+#logo {
+	width: 						400px;
+	height: 					133px;
+}
+
+#footer {
+	padding: 					10px;
+}
+
+p.top {
+	text-shadow: 				1px 3px 3px #b20000;
+	text-align: 				right;
+	padding: 					0.5%;
+}
+
+p.page_name {
+	font-size: 30px;
+	text-align: center;
+}
+
+.forum_welcome {
+	font-size: 30px;
+	text-decoration: none;
+	color: white;
+}
+
+span.footer_title {
+	text-shadow: 				1px 3px 3px #cecece;
+	float: 						right;
+}
+
+@font-face {
+	font-family: 				"index";
+	src: 						url("../fonts/bankgthd-webfont.woff");
+}
+
+/* Homepage */
+
+table.homepage_table {
+	width: 90%;
+}
+
+table.homepage_table, table.homepage_table th, table.homepage_table td {
+	border: solid 1px white;
+}
+
+table.homepage_table p, table.homepage_table span {
+	text-indent: 1%;
+}
+
+td.homepage_pp_area {
+	width: 50%;
+	margin: auto;
+}
+
+td.homepage_pp_area img {
+	margin: auto;
+	text-align: center;
+	vertical-align: middle;
+}
+
+
+span.birthday {
+	color:	white;
+}
+
+span.no_birthday {
+	color: rgba(119, 119, 119,0.5);
+	font-weight: bold;
+	font-style: italic;
+}
+
+img.birthday_pp {
+	height: 40px;
+	width: 40px;
+	vertical-align: middle;
+}
+
+table.lastRegistered_table {
+	width: 100%;
+}
+
+img.lastRegistered_pp {
+	width: 30%;
+}
+
+
+/* END Homepage */
+
+/* User management */
+
+table.userManagement_table {
+	margin: auto;
+	width: 90%;
+	border-collapse: collapse;
+}
+
+table.userManagement_table>tr>td {
+	width: 30%;
+	height: 10%;
+	text-align: left;
+}
+
+table.userManagement_user {
+	margin: 2%;
+	border: solid white 2px;
+	min-width: 10em;
+	width: 30em;
+	height: 10%;
+	text-align: left;
+	box-shadow: 2px -5px 2px rgba(255,255,255,0.8);
+}
+
+tr#memberPart {
+	background: 		linear-gradient(to right top, black, #4747ff);
+}
+
+tr#bannedPart {
+	background: 		linear-gradient(to right top, black, #cecece);
+}
+
+td.buttonArea {
+	text-align: center;
+
+}
+
+img.userManagement_pp {
+	height: 			100px;
+	width: 				100px;
+	float: 				left;
+}
+
+.changeRoleButtonUser {
+	margin: 5px;
+	padding: 5px;
+	background-color: grey;
+	text-shadow: 3px 3px 3px black;
+	box-shadow: 2px 2px 2px black;
+}
+
+.userAction {
+	padding: 5px;
+	text-align: center;
+}
+
+/* END User management */
+
+/* START Staff management */
+
+table.staffManagement_table {
+	margin: auto;
+	width: 90%;
+}
+
+table.staffManagement_table>tr>td {
+	width: 30%;
+	height: 10%;
+	padding: 10px;
+}
+
+table.staffManagement_user {
+	border: solid white 2px;
+	border-collapse: collapse;
+
+	margin: 5%;
+
+	text-indent: 5%;
+	text-align: left;
+	
+	width: 20em;
+	height: 10%;	
+}
+
+tr#modoPart {
+	background: 		linear-gradient(to right top, black, green);
+}
+
+tr#memberPart {
+	background: 		linear-gradient(to right top, black, #4747ff);
+}
+
+td.staffManagement_pp_area {
+	border: solid white 1px;
+}
+
+form.staffManagement_form {
+	margin: auto;
+	text-align: center;
+}
+
+img.staffManagement_pp {
+	height: 			100px;
+	width: 				100px;
+}
+
+.changeRoleButton {
+	font-size: 50px;
+	margin: 5px;
+}
+
+/* END Staff management */
+
+/* START Topic */
+
+#home_button {
+	height: 20px;
+	width: 	20px;
+}
+
+table.topic_msg {
+	background-color: #6d6b72;
+	margin: auto;
+	padding: 5px;
+	border: solid white;
+	width: 	90%;
+	border-collapse: collapse;
+}
+
+table#topic_msg_denied {
+	background: linear-gradient(to right top, maroon, red);
+	margin: auto;
+	border: solid red 1px;
+	width: 	90%;
+
+}
+
+
+table.topic_msg_denied {
+	padding: 10px;
+}
+
+tr.topic_userData td.topic_userData {
+	height: 200px;
+	width: 	200px;
+}
+
+td.topic_content {
+	padding: 10px;
+	border: solid white 1px;
+}
+
+td.topic_signature {
+	border: solid white 1px;
+	text-align: center;
+	font-style: italic;
+	padding: 10px;
+}
+
+img.topic_pp {
+	height: 200px;
+	width: 	200px;
+}
+
+#newMessage_form {
+	margin: 	auto;
+	width: 		90%;
+}
+
+#newMessage_title {
+	border: solid white 1px;
+}
+
+textarea#newMessageArea {
+	margin: 	auto;
+	resize: 	none;
+}
+
+a.source_code {
+	background-color: black;
+	font-family: ubuntu;
+}
+
+/* END Topic */
+
+/* START Memberlist */
+
+table.table_memberlist {
+	margin: 					auto;
+	border-collapse: 			collapse;
+}
+
+a.memberlist_namelink {
+	text-decoration: none;
+	font-weight: bold;
+	color: white;
+	-moz-transition-property:   color;
+    -moz-transition-duration:   0.5s;
+}
+
+a.memberlist_namelink:hover {
+	color:	cyan;
+}
+
+a.filterLink {
+	color:	white;
+	text-decoration: none;
+	-moz-transition-property:   color;
+    -moz-transition-duration:   0.5s;
+}
+
+a.filterLink:hover {
+	color:	cyan;
+}
+
+th.top_table_memberlist {
+	text-align: 				center;
+	background-color: 			#5656ff;
+	border: 					solid 1px white;
+	padding:		 			10px;
+}
+
+td.index_table_memberlist {
+	text-align: 				center;
+	border: 					solid 1px white;
+	padding:		 			10px;
+
+
+}
+
+img.memberlist_picture {
+	height: 					50px;
+	width: 						50px;
+}
+
+span.member_role {
+	color: 						#4747ff;
+	font-weight: 				bold;
+}
+
+span.moderator_role {
+	color: 						green;
+	font-weight: 				bold;
+}
+
+span.admin_role {
+	color: 						red;
+	font-weight: 				bold;
+}
+
+/* END Memberlist */
+
+/* START Register */
+
+.checkIcon {
+	width: 20px;
+	height: 20px;
+	vertical-align: middle;
+}
+
+/* END Register */

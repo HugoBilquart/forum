@@ -1,0 +1,292 @@
+<form method="POST" name="form">
+	<fieldset>
+		<legend>Registration</legend>
+		<table style="margin: auto;">
+			<tr>
+				<td>
+					<table>
+						<tr>
+							<th colspan="2">
+								<center>
+									<p>Login informations <b style="color: red">(required)</b></p>
+								</center>
+							</th>
+						</tr>
+						<tr>
+							<td>
+								<p>Nickname</p> 
+							</td>
+							<td>
+								<input type="text" name="newNickname" id="newNickname" required>
+								<img src="images/icons/checking.png" class="checkIcon" id="nameCheck" title="Enter a username of at least 4 characters">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p>E-mail address</p>
+							</td>
+							<td>
+								<input type="text" name="newEmail" id="newEmail" required>
+								<img src="images/icons/checking.png" class="checkIcon" id="emailCheck" title="Enter an email address (example@domain.com)">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p>Password</p>
+							</td>
+							<td>
+								<input type="password" name="newPass" id="newPass" required>
+								<img src="images/icons/checking.png" class="checkIcon" id="passCheck" title="Enter a password of at least 6 characters">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p>Confirm password</p> 
+							</td>
+							<td>
+								<input type="password" name="newPassConfirm" id ="newPassConfirm" required>
+								<img src="images/icons/checking.png" class="checkIcon" id="passConfCheck" title="Confirm password">
+							</td>
+						</tr>
+						<tr>
+							<th colspan="2">
+								<p>Other informations</p>
+							</th>
+						</tr>
+						<tr>
+							<td>
+								<p>Country</p>
+							</td>
+							<td>
+								<select name="newCountry">
+									<option value="">---Undefined---</option>
+									<option value="France">France</option>
+									<option value="England">England</option>
+									<option value="Canada">Canada</option>
+									<option value="USA">USA</option>
+									<option value="Elsewhere">Elsewhere</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p>Birthdate</p>
+							</td>
+							<td>
+								<select id="birth_day" name="birth_day">
+									<option value="" selected>..</option>
+									<script type="text/javascript">
+										for(var i = 1 ; i <= 31 ; i++) {
+									    	if (i < 10) document.write("<option value=\""+i+"\">0"+i+"</option>");
+									    	else document.write("<option value=\""+i+"\">"+i+"</option>");
+									    }
+									</script>
+								</select>
+								<select id="birth_month" name="birth_month">
+									<option value="" selected>..</option>
+									<script type="text/javascript">
+										for(var i = 1 ; i <= 12 ; i++) {
+									    	if (i < 10) document.write("<option value=\""+i+"\">0"+i+"</option>");
+									    	else document.write("<option value=\""+i+"\">"+i+"</option>");
+									    }
+									</script>
+								</select>
+								
+								<select id="birth_year" name="birth_year">
+									<option value="" selected>..</option>
+									<script>
+										var d = new Date;
+		                              	var ageMini = 1;
+		                              	var ageMaxi = 100;
+		                              	for(var i=d.getFullYear()-ageMini ; i > d.getFullYear() - ageMaxi ; i--) 
+		                              	{
+		                              		document.write("<option value=\""+i+"\">"+i+"</option>");
+		                              	}
+		                            </script>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td>
+					<table style="margin-left: 10%;">
+						<tr>
+							<td>
+								Use conditions
+								<img src="images/icons/checking.png" class="checkIcon" id="useConditionsCheck">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<textarea readonly rows="9" cols="45" style="resize: none;">
+Use conditions :
+
+...
+
+I don't want to write a lot of line because i'm pretty sure you'll never read it...
+
+So please, accept it and I leave you alone...
+								</textarea>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="checkbox" name="rulesConfirm" id="useConditions" onchange="document.form.submit.setAttribute('disabled','true')">
+								I accept use conditions
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<hr>
+		<center>
+			<input type="button" name="check" value="Check" id="checkForm">
+			<input type="reset" value="Reset">
+			<input type="submit" id="register_button" name="submit" value="Register" disabled>
+		</center>
+
+		<div id="formError">
+
+			<script type="text/javascript">
+				$newNickname = $('#newNickname');
+				$newEmail = $('#newEmail');
+				$newPass = $('#newPass');
+				$newPassConfirm = $('#newPassConfirm');
+				$useConditions = $('#useConditions');
+
+				var mailPattern = new RegExp ('^[A-Za-z0-9._-]+@[a-z0-9.-]{2,}[.][a-z]{2,5}$');
+				var errorArea = document.getElementById('formError');
+
+
+				$('#checkForm').click(function(){
+					$newBirthdate = $('#birth_day').val() + "/" + $('#birth_month').val() + "/" + $('#birth_year').val();
+					errorArea.innerHTML = '';
+					errCount = 0;
+
+					if($newNickname.val().length >= 4) {
+						$.post(
+							'script/checkUsername.php',
+							{
+								new_username : $newNickname.val()
+							},
+
+							function(data){
+								if(data == 'taken'){
+									$('#nameCheck').attr('src','images/icons/warning.png');
+									errorArea.innerHTML += `<p class="loginFailed">The username is taken</p>`;
+									errCount++;
+								}
+								else if(data == 'available') {
+									$('#nameCheck').attr('src','images/icons/approved.png');
+								}
+							},
+							'text'
+						);
+					}
+					else {
+						errorArea.innerHTML += `<p class="loginFailed">Your nickname is not long enough (at least 4 caracters)</p>`;
+						$('#nameCheck').attr('src','images/icons/denied.png');
+						errCount++;
+					}
+
+
+					if ($newEmail.val() != '' && mailPattern.test($newEmail.val())) {
+						$.post(
+							'script/checkEmail.php',
+							{
+								new_email : $newEmail.val()
+							},
+
+							function(data){
+								if(data == 'used'){
+									$('#emailCheck').attr('src','images/icons/warning.png');
+									errorArea.innerHTML += `<p class="loginFailed">The email address is already used</p>`;
+									errCount++;
+								}
+								else if(data == 'available') {
+									$('#emailCheck').attr('src','images/icons/approved.png');
+								}
+							},
+							'text'
+						);
+					}
+					else {
+						errorArea.innerHTML += `<p class="loginFailed">Your email address is improper (example@domain.com)</p>`;
+						$('#emailCheck').attr('src','images/icons/denied.png');
+						errCount++;
+					}
+
+					if($newPass.val().length >= 6) {
+						$("#passCheck").attr('src','images/icons/approved.png');
+					}
+					else {
+						$("#passCheck").attr('src','images/icons/denied.png');
+						errorArea.innerHTML += `<p class="loginFailed">Your password isn't strong enough (at least 6 characters)</p>`;
+						errCount++;
+					}
+
+					if($newPass.val().length >= 6 && $newPassConfirm.val().length >= 6) {
+						if($newPass.val() != $newPassConfirm.val()) {
+							$("#passCheck").attr('src','images/icons/warning.png');
+							$("#passConfCheck").attr('src','images/icons/warning.png');
+							errorArea.innerHTML += `<p class="loginFailed">Your password and confirmation don't match (at least 6 characters)</p>`;
+							errCount++;
+						}
+						else {
+							$("#passCheck").attr('src','images/icons/approved.png');
+							$("#passConfCheck").attr('src','images/icons/approved.png');
+						}
+					}
+					else {
+						$("#passConfCheck").attr('src','images/icons/warning.png');
+						errorArea.innerHTML += `<p class="loginFailed">Enter your password and confirm it (at least 6 characters)</p>`;
+						errCount++;
+					}
+					
+					if($newBirthdate != '//') {
+						if(!$newBirthdate.match(/^([0-2^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/)) {
+							errorArea.innerHTML += `<p class="loginFailed">Enter an entire birthday or leave it blank</p>`;
+							errCount++;
+						}
+					}
+
+					if($useConditions.prop('checked') == true) {
+						$("#useConditionsCheck").attr('src','images/icons/approved.png');
+					}
+					else {
+						$("#useConditionsCheck").attr('src','images/icons/denied.png');
+						errorArea.innerHTML += `<p class="loginFailed">You must accept use conditions to register</p>`;
+						errCount++;
+					}
+
+					if(errCount > 0) {
+						$('#register_button').attr('disabled','true');
+					}
+					else {
+						$('#register_button').removeAttr('disabled');
+					}
+
+				});
+
+				$('select').change(function(){
+					$('#register_button').attr('disabled','true');
+					$('.checkIcon').attr('src','images/icons/checking.png');
+					$('#formError').text('');
+				});
+
+				$('input').change(function(){
+					$('#register_button').attr('disabled','true');
+					$('.checkIcon').attr('src','images/icons/checking.png');
+				});
+
+				$('').change(function(){
+					$('#register_button').attr('disabled','true');
+					$('.checkIcon').attr('src','images/icons/checking.png');
+				});
+
+				$('input').keyup(function(){
+					$('#register_button').attr('disabled','true');
+					$('.checkIcon').attr('src','images/icons/checking.png');
+				});
+			</script>

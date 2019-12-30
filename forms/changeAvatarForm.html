@@ -1,0 +1,35 @@
+<tr colspan="2">
+	<th>
+		<p style="text-align: center;">
+			Change avatar page
+		</p>
+	</th>
+</tr>
+<tr>
+	<td>
+		<p>
+			Import your new avatar 
+			<input type="file" name="newAvatar" id="getPP" accept=".png">
+		</p>
+	</td>
+</tr>
+<tr colspan="2">
+	<td>
+		<p style="text-align: center;">
+			<input type="submit" name="submit" value="Confirm new avatar" disabled>
+		</p>
+	</td>
+</tr>
+
+<script type="text/javascript">
+	$('#getPP').change(function(){
+		if(this.files[0].size > 1050000) {
+			alert("Image too big (max 1.5 Mo)");
+			$(":submit").attr('disabled','true');
+		}
+		else {
+			document.getElementById("getPP").innerHTML = "";
+			$(":submit").removeAttr('disabled');	
+		}	
+	});
+</script>

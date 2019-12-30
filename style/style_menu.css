@@ -1,0 +1,55 @@
+#bandeauMenu {
+    z-index:                    20;
+    width: 						100%;
+
+    /*position: 					absolute;*/
+}
+
+dl.indexTabMenu {
+	background: 				  	linear-gradient(to right top, black, red);
+	text-align: 				  	center;
+	width: 						  	25%;
+	float:              		 	left;
+
+	position:                   	relative;
+    display: 						inline-block;
+}
+
+dt {
+	margin:                     20px;
+	-moz-transition-property:   background-color;
+    -moz-transition-duration:   1s;
+
+}
+
+dd {
+	display:                  none;
+
+	margin-right:             auto;
+    margin-left:              auto;
+    margin: 			      20px;
+    z-index:                  10;
+    text-align:               center;
+
+    -moz-transition-property:   background-color;
+    -moz-transition-duration:   1s;
+}
+
+dl:hover dd {
+    display:                  block;
+}
+
+a.liensTabMenu {
+	color: 						white;
+	text-decoration: 			none;
+	-moz-transition-property:   color;
+    -moz-transition-duration:   1s;
+}
+
+a.liensTabMenu:hover {
+	color: 						red;
+}
+
+dt:hover,dd:hover {
+	background-color: 		linear-gradient(to right top, red, black);
+}
