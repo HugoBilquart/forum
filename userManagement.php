@@ -1,7 +1,7 @@
 <?php
 	if($_SESSION) {
-		if ($_SESSION['role'] == 'moderator' || $_SESSION['role'] == 'admin') {
-			echo '<p class="page_name">User management page</p>';
+		if ($_SESSION['role'] == 2 || $_SESSION['role'] == 3) {
+			echo '<h1 class="page_name">User management page</h1>';
 			$req_muted = 'SELECT id,name FROM users WHERE role = 1 AND isMuted = 1';
 
 			$req_banned = 'SELECT id,name FROM users WHERE role = 0';

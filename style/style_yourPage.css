@@ -2,19 +2,37 @@
 	This stylesheet is used for personnal page and profile page
 */
 
-table.personal_page {
-	margin: 			auto;
+.personal-page {
 	border:				solid 1px white;
+	height: 100%;
 }
 
-img.profile_user_pic:hover {
-	opacity:				0.3; 
-}
-
-th.personal_page {
-	border:				solid 1px white;
+.personal_page {
 	border-collapse: 	none;
-	margin: 			auto;
+	padding-top: 		2%;
+	padding-bottom:		2%;
+}
+
+.info-title {
+	text-align: center;
+}
+
+.info-title span {
+	padding: 1%;
+}
+
+.profile_page {
+	background-color: 		#3B3A3F;
+}
+
+.profile_page li {
+	background-color: 		#3B3A3F;
+	border: none;
+}
+
+.profile_page li.detail::before {
+	content: "▶ ";
+	color: cyan;
 }
 
 td.personal_page {
@@ -40,6 +58,15 @@ span.role {
 	font-weight: 	bold;
 }
 
+.biography, .signature {
+	padding: 2%;
+	text-indent: 2%;
+}
+
+.signature p {
+	border: solid white;
+}
+
 a#username {
 	cursor: 		pointer;
 }
@@ -49,12 +76,8 @@ a#username {
 }
 
 img.profile_user_pic {
-	height:						300px; 
-	width:						300px;
-	z-index: 					1;
-	-moz-transition-property:   opacity;
-	transition-duration: 		1s;
-	cursor: 					pointer;
+	width:						100%;
+	height:						100%;
 }
 
 textarea.biography {
@@ -63,4 +86,30 @@ textarea.biography {
 
 table#video_commands {
 	display: none;
+}
+
+#editProfile {
+	padding: 2%;
+}
+
+#editProfile span {
+	padding: 5%;
+}
+
+#editProfile input {
+	width: 100%;
+}
+
+#video_command {
+	visibility: collapse;
+}
+
+#profile_picture {
+	width: 100%;
+	height: 100%;
+}
+
+#profile-picture-area {
+	min-width: 560px;
+	min-height: 315px;
 }

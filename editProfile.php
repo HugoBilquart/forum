@@ -1,12 +1,20 @@
 <form method='POST' enctype="multipart/form-data" name="editProfile">
-	<table class="editProfileForm">
 		<?php
 			if($_POST) {
 				switch ($_POST['submit']) {
 					case 'Change avatar':
-						include('forms/changeAvatarForm.html');
+						?>
+						<h1 class="page_name text-center">Change avatar page</h1>
+						<div class="col-md-12 m-auto">
+							<?php
+								include('forms/changeAvatarForm.html');
+							?>
+						</div>
+						<?php
 					break;
-
+		?>
+		<table class="editProfileForm">
+		<?php
 					case 'Edit profile details':
 						$connBDD = DBConnection();
 						$req_profile_info = 'SELECT country,birth_date,biography,signature,video_link FROM users WHERE id='.$_SESSION['userID'].'';

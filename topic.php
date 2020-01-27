@@ -1,8 +1,12 @@
 <?php
 	if($_POST) {
+		?>
+		<div class="col-md-11 topic-message text-center">
+		<?php
 		$req_check = 'SELECT * FROM messages WHERE id_user = '.$_SESSION['userID'].' AND id_topic = '.$_GET['value'].' AND content = "'.$_POST['newMessageArea'].'"';
-		$check = $connBDD->query($req_check);
-		if($check) {
+		$check = $connBDD->query($req_check)->fetch();
+
+		if(!empty($check)) {
 			echo "<p class='loginFailed'>This message is already post in the topic (don't flood topics)</p>";
 		}
 		else {
@@ -19,8 +23,9 @@
 				echo "<p class='loginFailed'>Message wasn't add</p>";
 			}
 		}
-
-
+		?>
+		</div>
+		<?php
 	}
 
 	$req = 'SELECT id,theme,topic_name,topic_owner,nb_message,options,complete FROM topics WHERE id="'.$_GET['value'].'"';
@@ -31,7 +36,7 @@
 	echo '<p><a href="index.php?page=home"><img src="images/icons/home.png" alt="home_button" id="home_button"></a>
 		 > <a href="index.php?page=forum" class="userLink">Forum</a> 
 		 > <a href="index.php?page=forum&category='.$line["theme"].'" class="userLink">'.$line["theme"].'</a> 
-		 > '.$topic_name.' [ n° '.$line["id"].' ]</p>';
+		 > '.$topic_name.' [ #'.$line["id"].' ]</p>';
 
 	$req_msg = 'SELECT users.id,name,role,profile_pic,signature,publish_date,content FROM users INNER JOIN messages ON users.id = messages.id_user WHERE messages.id_topic ='.$_GET["value"];
 	$msg = $connBDD->query($req_msg);
@@ -51,48 +56,91 @@
 		$topic_publishDate = $msg_data[$i]['publish_date'];
 		$topic_content = $msg_data[$i]['content'];
 
-		echo '	<table class="topic_msg">
-					<tr class="topic_userData">
-				    	<td class="topic_userData"><a class="userLink" href="index.php?page=profile&user='.$topic_user.'" title="Profile of '.$topic_user.'"><img src="'.$topic_pp.'" alt="'.$topic_pp.'" class="topic_pp"></a></td>
-				    	<td rowspan="2" colspan="2" class="topic_content">'.$topic_content.'</td>
-				  	</tr>
-				  	<tr>
-				    	<td rowspan="2" class="topic_userData"><a class="userLink" href="index.php?page=profile&user='.$topic_user.'" title="Profile of '.$topic_user.'"><p>'.$topic_user.'</p></a><p>'.$topic_role.'</p><p>'.$topic_publishDate.'</p></td>
-				  	</tr>
-				  	<tr>
-				    	<td colspan="2" class="topic_signature">'.$topic_signature.'</td>
-				  	</tr>
-				</table>';
+		?>
+			<div class="col-md-11 topic-message">
+				<div class="row border">
+					<div class="col-sm-2 name-area">
+						<span><b><?php echo $topic_user; ?></b> - <span class="<?php echo strtolower($topic_role); ?>_role"><?php echo $topic_role; ?></span></span>
+					</div>
+					<div class="col-sm-10">
+						<p><?php echo $topic_publishDate; ?></p>
+					</div>
+					<div class="col-sm-2 topic-pp-area">
+						<a class="userLink" href="index.php?page=profile&user=<?php echo $topic_user; ?>" title="Profile of <?php echo $topic_user; ?>">
+							<img src="<?php echo $topic_pp; ?>" alt="<?php echo $topic_pp; ?>" class="topic_pp">
+						</a>
+					</div>
+					<div class="col-sm-10 topic-msg-content">
+						<p><?php echo $topic_content; ?></p>
+					</div>
+					<div class="col-sm-2 empty"></div>
+					<div class="col-sm-10 text-center align-middle signature-area">
+						<hr>
+						<span><?php echo $topic_signature; ?></span>
+					</div>
+				</div>
+			</div>
+			<?php
 	}
-
-		if($_SESSION) {
-			if($line['complete'] == 1) {
-				echo '<table id="topic_msg_denied"><tr><th>You can\'t post on a completed topic</th></tr></table>';
-			}
-			else if($_SESSION['isMuted'] == 1) {
-				echo '<table id="topic_msg_denied"><tr><th>Your are not allowed to publish on the forum</th></tr></table>';
-			}
-			else if($line['options'] == 'readOnly') {
-				if($_SESSION['userName'] == $line['topic_owner']) {
-					formNewMessage($topic_name);
-				}
-				else {
-					echo '<table id="topic_msg_denied"><tr><th>This topic is editable only by his owner</th></tr></table>';
-				}
-			}
-			else if($line['options'] == 'staffOnly') {
-				if($_SESSION['role'] == 'admin' OR $_SESSION['role'] == 'moderator') {
-					formNewMessage($topic_name);
-				}
-				else {
-					echo '<table id="topic_msg_denied"><tr><th>Only staff is allowed to publish on this topic</th></tr></table>';
-				}	
-			}
-			else {
-				formNewMessage($topic_name);
-			}
-		}
-		else {
-			echo '<table id="topic_msg_denied"><tr><th>You must be authenticated to publish in topics</th></tr></table>';
-		}
 ?>
+	
+
+			<div class="col-md-11 topic-message">
+				<div class="row border">
+				<?php
+					if($_SESSION) {
+						if($line['complete'] == 1 && $_SESSION['role'] != 3) {
+							?>
+							<div class="col-md-12 topic-message" id="topic_msg_denied">
+								<p>You can\'t post on a completed topic</p>
+							</div>
+							<?php
+						}
+						else if($_SESSION['isMuted'] == 1) {
+							?>
+							<div class="col-md-12 topic-message" id="topic_msg_denied">
+								<p>Your are not allowed to publish on the forum</p>
+							</div>
+							<?php
+						}
+						else if($line['options'] == 'readOnly' && $_SESSION['userName'] != $line['topic_owner']) {
+							?>
+							<div class="col-md-12 topic-message" id="topic_msg_denied">
+								<p>This topic is editable only by his owner</p>
+							</div>
+							<?php
+						}
+						else if($line['options'] == 'staffOnly' && $_SESSION['role'] == 1) {
+							?>
+							<div class="col-md-12 topic-message" id="topic_msg_denied">
+								<p>Only staff is allowed to publish on this topic</p>
+							</div>
+							<?php
+						}
+						else {
+							?>
+							<div class="form-group col-md-12 form-part text-center topic-message">
+								<form method="POST" id="newMsg">
+									<p class="form-part-title">RE : <?php echo $topic_name; ?></p>
+									<hr>
+									<p>
+										<label for="newMessageArea">Type your message here</label>
+										<textarea class="form-control" id="newMessageArea" name="newMessageArea" rows="10" onchange=""></textarea>
+									</p>
+
+									<input type="submit" class="btn btn-primary form-control" name="submit" value="Publish message">
+								</form>
+							</div>
+							<?php
+						}
+					}
+					else {
+						?>
+						<div class="col-md-12 topic-message" id="topic_msg_denied">
+							<p>You must be authenticated to publish in topics</p>
+						</div>
+						<?php
+					}
+				?>
+				</div>
+			</div>

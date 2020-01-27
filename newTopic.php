@@ -1,116 +1,118 @@
-<?php
-	if($_SESSION AND $_SESSION['isMuted'] == 0) {
-		echo '<p><center>Creation of a new topic</center></p>';
-	}
-	else {
-		echo 'echo "<script type="text/javascript"> window.location = "index.php?page=forum"; </script>";';
-	}
-?>
-<form method="POST" id="newTopicArea">
-	<fieldset>
-		<legend>New Topic</legend>
-		<table id="newTopic_table">
-			<tr>
-				<th>
-					<p>Topic name : </p> 
-				</th>
-				<td>
-					<input type="text" name="newTopic_name" size="50" required></input>
-				</td>
-			</tr>
+<div class="col-md-12">
+	<?php
+		if($_SESSION AND $_SESSION['isMuted'] == 0) {
+			?>
+			<h1 class="page_name">Creation of a new topic</h1>
+			<?php
+		}
+		else {
+			echo 'echo "<script type="text/javascript"> window.location = "index.php?page=forum"; </script>";';
+		}
 
-			<tr>
-				<th>
-					<p>Topic theme : </p> 
-				</th>
-				<td>
-					<select name="newTopic_theme" required>
-						<option value="" selected>---Undefined---</option>
+		if($_POST) {
+			if($_POST['submit'] == 'Publish topic') {
+				$connBDD = DBConnection();
+				$creation_date = date('Y-m-d');
+				$req_topic = 'INSERT INTO topics(topic_name,topic_owner,options,theme,nb_message,creation_date,complete) VALUES ("'.$_POST['newTopic_name'].'","'.$_SESSION['userName'].'","'.$_POST['newTopic_options'].'","'.$_POST['newTopic_theme'].'","1","'.$creation_date.'","0")';
+				$check = $connBDD->exec($req_topic);
+				if($check) {
+					echo "<p class='success'>Topic successfully published !</p>";
+					$req_id_topic = 'SELECT id FROM topics WHERE topic_name = "'.$_POST['newTopic_name'].'" AND creation_date = "'.$creation_date.'"';
+					$query = $connBDD->query($req_id_topic);
+					$line = $query->fetch();
+					$req_new_message = 'INSERT INTO messages(id_topic,id_user,publish_date,content) VALUES ("'.$line['id'].'","'.$_SESSION['userID'].'","'.date('Y-m-d H:i:s').'","'.$_POST['newMessageArea'].'")';
+					$publish = $connBDD->exec($req_new_message);
+					if($publish) {
+						echo "<p class='success'>Message add to the topic !</p>";
+					}
+					else {
+						echo "<p class='failed'>Message hasn't been add</p>";
+					}			
+				}
+				else {
+					echo "<p class='failed'>Creation of topic FAILED</p>";
+				}
+			}
+		}
+	?>
+</div>
+<div class="col-md-12" id="newTopic">
+	<form method="POST">
+		<div class="row">
+			<div class="form-group col-md-10 form-part" id="newTopicInfo">
+				<p class="form-part-title">New topic informations</p>
+				<hr>
+
+				<p>
+					<label for="newTopicName">Topic name</label>
+					<input type="text" class="form-control" name="newTopic_name" id="newTopicName" required>
+				</p>
+				<p>
+					<label for="newTopicTheme">Topic theme</label>
+					<select class="form-control" name="newTopic_theme" id="newTopicTheme" required>
+						<option value="" selected>-- Select --</option>
 						<?php 
-							if($_SESSION['role'] == 'admin') {
-								echo '<option value="rules">Rules</option>';
-								echo '<option value="changelogs">Changelogs</option>';
+							if($_SESSION['role'] == 3) {
+								?>
+									<option value="rules">Rules</option>
+									<option value="changelogs">Changelogs</option>
+								<?php
 							}
-							if($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'moderator') {
-								echo '<option value="announce">Announces</option>';
+							if($_SESSION['role'] > 1) {
+								?>
+								<option value="announce">Announces</option>
+								<?php
 							}
 						?>
 						<option value="network">Network</option>
 						<option value="web">Web</option>
 						<option value="software">Software</option>
 					</select>
-				</td>
-			</tr>
-			<?php 
-				if($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'moderator') {
-					echo '<tr><th><p>Topic option : </p></th><td><select name="newTopic_options">';
-					if($_SESSION['role'] == 'admin') {
-						echo '<option value="" selected>---Undefined---</option>';
-						echo '<option value="readOnly">Read Only</option>';
-						echo '<option value="staffOnly">Editable only by the staff</option>';
-					}
-					else {
-						echo '<option value="" selected>---Undefined---</option>';
- 						echo '<option value="staffOnly">Editable only by the staff</option>';
-					}
-					echo '</select></td></tr>';
-				}
-			?>
-			<tr>
-				<td colspan="2">
-					<?php
-						$topicName = '';
-						formNewMessage($topicName);
+				</p>
+				<?php
+				if($_SESSION['role'] > 1) {
 					?>
-				</td>
-			</tr>
-		</table>
-	</fieldset>
-</form>
+					<p>
+						<label for="newTopicOption">Topic option</label>
+						<select class="form-control" name="newTopic_options" id="newTopicOption">
+							<option value="" selected>---Undefined---</option>
+							<?php
+								if($_SESSION['role'] == 3) {
+									?>
+									<option value="readOnly">Read Only</option>
+									<?php
+								}
+								?>
+								<option value="staffOnly">Editable only by the staff</option>
+						</select>
+					</p>
+				<?php
+				}
+				?>
+			</div>
+
+			<div class="form-group col-md-10 form-part text-center" id="newTopicFirstMsg">
+				<p class="form-part-title">First message</p>
+				<hr>
+				<p>
+					<label for="newMessageArea">Type the first message here</label>
+					<textarea class="form-control" id="newMessageArea" name="newMessageArea" rows="10" onchange=""></textarea>
+				</p>
+			</div>
+
+			<div class="form-group col-md-10 text-center" id="newTopicSubmit">
+				<input type="submit" class="btn btn-primary form-control" name="submit" value="Publish topic">
+			</div>
+		</div>
+	</form>
+</div>
 
 <?php
-	if($_POST) {
-		if($_POST['submit'] == 'Publish topic') {
-			$connBDD = DBConnection();
-			$creation_date = date('d/m/Y');
-			$req_topic = 'INSERT INTO topics(topic_name,topic_owner,options,theme,nb_message,creation_date,complete) VALUES ("'.$_POST['newTopic_name'].'","'.$_SESSION['userName'].'","'.$_POST['newTopic_options'].'","'.$_POST['newTopic_theme'].'","1","'.$creation_date.'","0")';
-			$check = $connBDD->exec($req_topic);
-			if($check) {
-				echo "<p class='loginDone'>Topic successfully published !</p>";
-				$req_id_topic = 'SELECT id FROM topics WHERE topic_name = "'.$_POST['newTopic_name'].'" AND creation_date = "'.$creation_date.'"';
-				$query = $connBDD->query($req_id_topic);
-				$line = $query->fetch();
-				$req_new_message = 'INSERT INTO messages(id_topic,id_user,publish_date,content) VALUES ("'.$line['id'].'","'.$_SESSION['userID'].'","'.date('d/m/Y H:i:s').'","'.$_POST['newMessageArea'].'")';
-				$publish = $connBDD->exec($req_new_message);
-				if($publish) {
-					echo "<p class='loginDone'>Message add to the topic !</p>";
-				}
-				else {
-					echo "<p class='loginFailed'>Message hasn't been add</p>";
-				}			
-			}
-			else {
-				echo "<p class='loginFailed'>Creation of topic FAILED</p>";
-			}
-		}
-	}
+	
 ?>
 
 <style type="text/css">
 	
-	form#newTopicArea {
-		margin: 	auto;
-		width: 		90%;
-	}
-
-	table.newTopic_table, tr,th,td {
-		margin: 	auto;
-	}
-
-	textarea#newMessageArea {
-		resize: none;
-		text-indent: 0px;
-		width: 90%; 
-	}
+	
 
 </style>

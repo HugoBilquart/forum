@@ -1,8 +1,8 @@
-#bandeauMenu {
-    z-index:                    20;
-    width: 						100%;
+/*#bandeauMenu {
+	width: 						100%;
+	margin: auto;
 
-    /*position: 					absolute;*/
+    position: 					absolute;
 }
 
 dl.indexTabMenu {
@@ -52,4 +52,47 @@ a.liensTabMenu:hover {
 
 dt:hover,dd:hover {
 	background-color: 		linear-gradient(to right top, red, black);
+}
+*/
+
+
+
+nav {
+	width: 			100%;
+	background: 	linear-gradient(to right top, black, red);
+	text-align: center;
+}
+
+ 
+
+.navbar-collapse, .navbar-nav li {
+	float: left;
+	text-align: left;
+}
+
+.dropdown-menu {
+	background: 	linear-gradient(to right top, black, red);
+}
+
+.navbar .nav-item:not(:last-child) {
+	margin-right: 35px;
+}
+
+.dropdown-toggle::after {
+	transition: transform 0.15s linear; 
+}
+
+.show.dropdown .dropdown-toggle::after {
+	transform: translateY(3px);
+}
+
+a.nav-link {
+	color: 						white;
+	text-decoration: 			none;
+	-moz-transition-property:   color;
+    -moz-transition-duration:   1s;
+}
+
+a.nav-link:hover {
+	color: 						red;
 }

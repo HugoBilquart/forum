@@ -1,6 +1,6 @@
 <?php
 	if($_SESSION) {
-		if ($_SESSION['role'] == 'moderator' || $_SESSION['role'] == 'admin') {
+		if ($_SESSION['role'] > 1) {
 			echo '<p class="page_name">Forum management page</p>';
 			$req_topic_removable = 'SELECT topics.id,topic_name,topic_owner,role,nb_message FROM topics INNER JOIN users ON topics.id = users.id WHERE users.role < 3';
 			$results_topic_removable = $connBDD->query($req_topic_removable);

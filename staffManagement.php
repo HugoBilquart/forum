@@ -1,7 +1,11 @@
+<div class="col-md-12">
 <?php
 	if($_SESSION) {
-		if ($_SESSION['role'] == 'admin') {
-			echo '<p class="page_name">Staff management page</p>';
+		if ($_SESSION['role'] == 3) {
+			?>
+				<h1 class="page_name">Staff management page</h1>
+				<p class="page_name">Resultat du traitement</p>
+			<?php
 		}
 		else {
 			echo "<script type='text/javascript'> window.location = 'index.php?page=home'; </script>";
@@ -13,20 +17,27 @@
 
 		if($_POST) {
 			if($_POST["modoAction"] == '➕' AND !empty($_POST['userToPromote'])) {
-				echo '<p style="text-align: center;">User n° '.$_POST['userToPromote'];
+				?>
+				<p class="page_name">User n° <?php echo $_POST['userToPromote']; ?>
+				<?php
 				$req = 'UPDATE users SET role = 2 WHERE id="'.$_POST['userToPromote'].'"';
 				$results = $connBDD->exec($req);
 				if($results) {
-					echo " promoted as moderator</p></center>";
+					?>
+						promoted as moderator</p>
+					<?php
 				}
 			} 
 			else if($_POST["modoAction"] == '➖' AND !empty($_POST['moderatorsToDemote'])) {
-				echo '<p style="text-align: center;">User n° '.$_POST['moderatorsToDemote'];	
+				?>
+				<p class="page_name">User n° <?php echo $_POST['moderatorsToDemote']; ?>	
+				<?php
 				$req = 'UPDATE users SET role = 1 WHERE id="'.$_POST['moderatorsToDemote'].'"';
 				$results = $connBDD->exec($req);
 				if($results) {
-					echo " demoted</p>";
-					email('demote');
+					?> 
+						demoted</p>
+					<?php
 				}
 			}
 				
@@ -42,45 +53,43 @@
 		$nbMember = countRole(1);
 		$nbModo = countRole(2);
 ?>
+
 <form method="POST" class="staffManagement_form">
-	<table class="staffManagement_table">
-		<tr id="modoPart">
-			<th>
-				<p>Current moderators - <?php echo $nbModo; ?></p>
-				<p>	<select name="moderatorsToDemote">
-						<option value="">---Select a moderator---</option>
-						<?php
-							foreach ($tab_moderators as $key => $value) {
-								echo '<option value="'.$tab_moderators[$key]['id'].'">'.$tab_moderators[$key]['id'].' | '.$tab_moderators[$key]['name'].'</option>';
-							}
-						?>
-					</select>
-					<input type="submit" name="modoAction" value="➖" title="Demote selected moderator">
-				</p>
-			</th>
-		</tr>
-	</table>
-	<?php
-		fetchMember(2,"staffManagement",'display');
-	?>
-	<table class="staffManagement_table">
-		<tr id="memberPart">
-			<th>
-				<p>Current members - <?php echo $nbMember; ?></p>
-				<p>	<select name="userToPromote">
-						<option value="">---Select a user---</option>
-						<?php
-							foreach ($tab_users as $key => $value) {
-								echo '<option value="'.$tab_users[$key]['id'].'">'.$tab_users[$key]['id'].' | '.$tab_users[$key]['name'].'</option>';
-							}
-						?>
-					</select>
-					<input type="submit" name="modoAction" value="➕" title="Promote selected user">
-				</p>
-			</th>
-		</tr>
-	</table>
-	<?php
-		fetchMember(1,"staffManagement",'display');
-	?>
+	<div class="row">
+		<div class="col-md-12" id="modoPart">
+			<p>Current moderators - <?php echo $nbModo; ?></p>
+			<p>	<select name="moderatorsToDemote">
+					<option value="">---Select a moderator---</option>
+					<?php
+						foreach ($tab_moderators as $key => $value) {
+							echo '<option value="'.$tab_moderators[$key]['id'].'">'.$tab_moderators[$key]['id'].' | '.$tab_moderators[$key]['name'].'</option>';
+						}
+					?>
+				</select>
+				<input type="submit" name="modoAction" value="➖" title="Demote selected moderator">
+			</p>
+		</div>
+		<?php
+			fetchMember(2,"staffManagement",'display');
+		?>
+
+		<div class="col-md-12" id="memberPart">
+			<p>Current members - <?php echo $nbMember; ?></p>
+			<p>	<select name="userToPromote">
+					<option value="">---Select a user---</option>
+					<?php
+						foreach ($tab_users as $key => $value) {
+							echo '<option value="'.$tab_users[$key]['id'].'">'.$tab_users[$key]['id'].' | '.$tab_users[$key]['name'].'</option>';
+						}
+					?>
+				</select>
+				<input type="submit" name="modoAction" value="➕" title="Promote selected user">
+			</p>
+		</div>
+		<?php
+			fetchMember(1,"staffManagement",'display');
+		?>
+
+	</div>
 </form>
+</div>

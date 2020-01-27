@@ -3,16 +3,16 @@
 		<legend>Login</legend>
 		<table>
 			<tr>
-				<td>Username</td>
-				<td><input type="text" name="userLogin"></td>
+				<td><label>Username</label></td>
+				<td><input type="text" name="userLogin" class="form-control"></td>
 			</tr>
 			<tr>
-				<td>Password</td> 
-				<td><input type="password" name="passLogin"></td>
+				<td><label>Password</label></td> 
+				<td><input type="password" name="passLogin" class="form-control"></td>
 			</tr>
 			<tr>
 				<td>
-					<input type="submit" name="submit" value="Login">
+					<input type="submit" name="submit" value="Login" class="btn btn-primary">
 				</td>
 			</tr>
 			<tr>
@@ -26,7 +26,11 @@
 				if(isset($_POST['submit'])) {
 					if($_POST['submit'] == 'Login') {
 						$connBDD = DBConnection();
-						$req = 'SELECT id,name,role,profile_pic,isMuted FROM users WHERE name="'.$_POST['userLogin'].'" AND password="'.$_POST['passLogin'].'"';
+						$pass = $_POST['passLogin'];
+						include("hash.php");
+						$hashed_password = crypt("$pass", "$hash");
+
+						$req = 'SELECT id,name,role,profile_pic,isMuted FROM users WHERE name="'.$_POST['userLogin'].'" AND password="'.$hashed_password.'"';
 						$results = $connBDD->query($req);
 						$line = $results->fetch();
 						if(empty($line)) {
@@ -43,7 +47,6 @@
 							$_SESSION['isMuted'] = $line['isMuted'];
 							$_SESSION['pp'] = $line['profile_pic'];
 							echo '<script type="text/javascript"> window.location = "'.$_SERVER['REQUEST_URI'].'"; </script>';
-							
 						}
 					}
 				}
