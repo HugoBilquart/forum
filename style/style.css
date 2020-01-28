@@ -229,72 +229,6 @@ img.lastRegistered_pp {
 
 /* END Homepage */
 
-/* User management */
-
-table.userManagement_table {
-	margin: auto;
-	width: 90%;
-	border-collapse: collapse;
-}
-
-table.userManagement_table>tr>td {
-	width: 30%;
-	height: 10%;
-	text-align: left;
-}
-
-.userManagement_user {
-	margin: 2%;
-	border: solid white 2px;
-	min-width: 10em;
-	width: 30em;
-	height: 10%;
-	text-align: left;
-	box-shadow: 2px -5px 2px rgba(255,255,255,0.8);
-}
-
-#memberPart {
-	background: 		linear-gradient(to right top, black, #4747ff);
-}
-
-#bannedPart {
-	background: 		linear-gradient(to right top, black, #cecece);
-}
-
-td.buttonArea {
-	text-align: center;
-
-}
-
-img.userManagement_pp {
-	height: 			100%;
-	position: absolute;
-	left: 0;
-
-}
-
-.changeRoleButtonUser {
-	margin: 5px;
-	padding: 5px;
-	background-color: grey;
-	text-shadow: 3px 3px 3px black;
-	box-shadow: 2px 2px 2px black;
-}
-
-.user-action-area {
-	padding-bottom: 2%;
-}
-
-.userAction {
-	text-align: center;
-}
-
-.userAction select {
-	margin: 2%;
-}
-
-/* END User management */
-
 /* START Staff management */
 
 div.staffManagement_table {
@@ -526,20 +460,6 @@ div#bannedPart {
 	background: 		linear-gradient(to right top, black, #cecece);
 }
 
-.userManagement_user {
-	margin: 2%;
-	border: solid white 2px;
-	min-width: 10em;
-	width: 30em;
-	height: 10%;
-	text-align: left;
-	box-shadow: 2px -5px 2px rgba(255,255,255,0.8);
-}
-
-.userManagement_user .button-area {
-	text-align: right;
-}
-
 .userManagement_user li, .moderator-user li {
 	list-style-type: none;	
 }
@@ -571,6 +491,20 @@ div#bannedPart {
 	color: darkgrey;
 }
 
+.userManagement_user {
+	margin: 2%;
+	border: solid white 2px;
+	min-width: 10em;
+	width: 30em;
+	height: 10%;
+	text-align: left;
+	box-shadow: 2px -5px 2px rgba(255,255,255,0.8);
+}
+
+.userManagement_user .button-area {
+	text-align: right;
+}
+
 .userManagement_user a span, .moderator-user a span {
 	color: 				white;
 	font-weight: 		bold;
@@ -581,6 +515,33 @@ div#bannedPart {
 
 .userManagement_user a:hover span{
 	color: 						cyan;
+}
+
+img.userManagement_pp {
+	height: 			100%;
+	position: absolute;
+	left: 0;
+
+}
+
+.changeRoleButtonUser {
+	margin: 5px;
+	padding: 5px;
+	background-color: grey;
+	text-shadow: 3px 3px 3px black;
+	box-shadow: 2px 2px 2px black;
+}
+
+.user-action-area {
+	padding-bottom: 2%;
+}
+
+.userAction {
+	text-align: center;
+}
+
+.userAction select {
+	margin: 2%;
 }
 
 /* END USER MANAGEMENT */
