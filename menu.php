@@ -47,7 +47,7 @@
                             if($_SESSION['role'] == 3 OR $_SESSION['role'] == 2) {
                                 ?>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
-                                        <a class="dropdown-item" href="index.php?page=forumManagement">Forum management</a>
+                                        <a class="dropdown-item" href="index.php?page=userManagement">User management</a>
                                 <?php
 
                                 if($_SESSION['role'] == 3) {

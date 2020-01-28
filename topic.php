@@ -55,6 +55,10 @@
 		$topic_signature = $msg_data[$i]['signature'];
 		$topic_publishDate = $msg_data[$i]['publish_date'];
 		$topic_content = $msg_data[$i]['content'];
+		$regExpHref = '#((https?|ftp)://(\S*?\.\S*?))([\s)\[\]{},;"\':<]|\.\s|$)#i';
+		if(preg_match($regExpHref,$topic_signature)) {
+			$topic_signature = '<a href="'.$topic_signature.'">'.$topic_signature.'</a>';
+		}
 
 		?>
 			<div class="col-md-11 topic-message">

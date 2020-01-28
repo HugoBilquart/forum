@@ -102,6 +102,11 @@ textarea#newMessageArea {
 
 .topic-message {
     margin: auto;
+    background-color: rgba(102,102,102,0.4);
+}
+
+.topic-message:hover {
+    background-color: rgb(102,102,102); 
 }
 
 .name-area {
@@ -137,6 +142,10 @@ img.topic_pp {
 
 .signature-area span {
     padding: 5%;
+}
+
+.signature-area a {
+    color: #00b2ff;
 }
 
 .empty {

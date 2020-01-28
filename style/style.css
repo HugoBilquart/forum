@@ -63,13 +63,16 @@ h2 {
 }
 
 .logoArea {
-	height: 100%;
+	float: left;
 	text-align: left;
 
 }
 
 .logoArea img {
-	display: inline;
+	position: absolute;
+	left: 0;
+	border-right: solid green 0.1px;
+	height: 100%;
 }
 
 th.top {
@@ -240,7 +243,7 @@ table.userManagement_table>tr>td {
 	text-align: left;
 }
 
-table.userManagement_user {
+.userManagement_user {
 	margin: 2%;
 	border: solid white 2px;
 	min-width: 10em;
@@ -250,11 +253,11 @@ table.userManagement_user {
 	box-shadow: 2px -5px 2px rgba(255,255,255,0.8);
 }
 
-tr#memberPart {
+#memberPart {
 	background: 		linear-gradient(to right top, black, #4747ff);
 }
 
-tr#bannedPart {
+#bannedPart {
 	background: 		linear-gradient(to right top, black, #cecece);
 }
 
@@ -264,9 +267,10 @@ td.buttonArea {
 }
 
 img.userManagement_pp {
-	height: 			100px;
-	width: 				100px;
-	float: 				left;
+	height: 			100%;
+	position: absolute;
+	left: 0;
+
 }
 
 .changeRoleButtonUser {
@@ -277,9 +281,16 @@ img.userManagement_pp {
 	box-shadow: 2px 2px 2px black;
 }
 
+.user-action-area {
+	padding-bottom: 2%;
+}
+
 .userAction {
-	padding: 5px;
 	text-align: center;
+}
+
+.userAction select {
+	margin: 2%;
 }
 
 /* END User management */
@@ -302,28 +313,6 @@ div.staffManagement_table div {
 
 }
 
-table.staffManagement_table>tr>td {
-	background-color: #3B3A3F;
-	width: 30%;
-	height: 10%;
-	padding: 10px;
-}
-
-table.staffManagement_user {
-	background-color: #3B3A3F;
-
-	border: solid white 2px;
-	border-collapse: collapse;
-
-	margin: 5%;
-
-	text-indent: 5%;
-	text-align: left;
-	
-	width: 20em;
-	height: 10%;	
-}
-
 div#modoPart {
 	background: 		linear-gradient(to right top, black, green);
 }
@@ -332,11 +321,6 @@ div#memberPart {
 	background: 		linear-gradient(to right top, black, #4747ff);
 }
 
-div.staffManagement_pp_area 
-{
-	background-color: #3B3A3F;
-	border: solid white 1px;
-}
 
 form.staffManagement_form {
 	margin: auto;
@@ -466,3 +450,137 @@ span.admin_role {
 }
 
 /* END Register */
+
+
+/* STAFF MANAGEMENT */
+
+#members:first-child, #moderators:first-child {
+	margin: auto;
+	text-align: center;
+}
+
+.member-user, .moderator-user {
+	margin: 2%;
+	text-align: left;
+}
+
+.member-user a, .moderator-user a {
+	text-decoration: 	none;
+}
+
+.member-user a:hover, .moderator-user a:hover {
+	text-decoration: 	none;
+}
+
+.member-user a span, .moderator-user a span {
+	color: 				white;
+	font-weight: 		bold;
+	
+	transition-property: 		color;
+	transition-duration:		0.6s;
+}
+
+.member-user a:hover span{
+	color: 						cyan;
+}
+
+.moderator-user a:hover span{
+	color: 						green;
+}
+
+.member-user li, .moderator-user li {
+	list-style-type: none;	
+}
+
+.member-user li span {
+	color: #00b5b5;	
+}
+
+.member-user li::before {
+	content: "▶ ";
+	color: #00b5b5;
+}
+
+.moderator-user li span {
+	color: #00aa00;	
+}
+
+.moderator-user li::before {
+	content: "▶ ";
+	color: #00aa00;
+}
+
+/* END STAFF MANAGEMENT */
+
+/* USER MANAGEMENT */
+
+div#memberPart {
+	background: 		linear-gradient(to right top, black, #4747ff);
+}
+
+div#mutedPart {
+	background: 		linear-gradient(to right top, black, rgb(148, 0, 0));
+}
+
+div#bannedPart {
+	background: 		linear-gradient(to right top, black, #cecece);
+}
+
+.userManagement_user {
+	margin: 2%;
+	border: solid white 2px;
+	min-width: 10em;
+	width: 30em;
+	height: 10%;
+	text-align: left;
+	box-shadow: 2px -5px 2px rgba(255,255,255,0.8);
+}
+
+.userManagement_user .button-area {
+	text-align: right;
+}
+
+.userManagement_user li, .moderator-user li {
+	list-style-type: none;	
+}
+
+.userManagement_user li span {
+	color: #00b5b5;	
+}
+
+.userManagement_user li::before {
+	content: "▶ ";
+	color: #00b5b5;
+}
+
+.muted li span {
+	color: red;	
+}
+
+.muted li::before {
+	content: "▶ ";
+	color: red;
+}
+
+.banned li span {
+	color: darkgrey;	
+}
+
+.banned li::before {
+	content: "▶ ";
+	color: darkgrey;
+}
+
+.userManagement_user a span, .moderator-user a span {
+	color: 				white;
+	font-weight: 		bold;
+	
+	transition-property: 		color;
+	transition-duration:		0.6s;
+}
+
+.userManagement_user a:hover span{
+	color: 						cyan;
+}
+
+/* END USER MANAGEMENT */

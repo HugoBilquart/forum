@@ -101,7 +101,10 @@
 						<tbody>
 							<?php
 								foreach ($articles as $key => $value) {
+
+									//Folder icon depending of topic creation date or completed state
 									$countDay = date_diff(date_create(date('Y-m-d')),date_create($articles[$key]['creation_date']))->format('%d');
+									//An topic is considered as "new" if it's less than 7 days old.
 									if($countDay > 7) {
 										if($articles[$key]['complete'] == 0) {
 											$src_folder = "default";

@@ -66,27 +66,6 @@
 		echo '	<table class="topics"><tr style="background-color: #009996"><td id="corner" class="topic_folder"></td><th>Topic name</th><th>Number of message</th><th>Last message</th></tr>';
 	}
 
-	function topic_folder($name) {
-		$connBDD = DBConnection();
-		$req = 'SELECT creation_date, complete FROM topics WHERE topic_name="'.$name.'"';
-		$results = $connBDD->query($req);
-		$line = $results->fetch();
-
-		$creationDate = $line['creation_date'];
-		$creationDate = date_create($creationDate);
-		$currentDate = date_create(date('d-m-Y'));
-		$date_results = date_diff($creationDate,$currentDate);
-		$date_difference = intval($date_results->format("%a"));
-
-		if($line['complete'] == '1') $topicPic = "images/folders/complete.png";
-		
-		else if($date_difference < 7) $topicPic = "images/folders/new.png";
-		
-		else $topicPic = "images/folders/default.png";
-		
-		return $topicPic;
-	}
-
 	function createNewAvatar($user) {
 		$file = 'images/users_avatar/default.jpg';
 		$newfile = 'images/users_avatar/'.$user.'.png';
@@ -225,24 +204,30 @@
 		$req = 'SELECT id,name,role FROM users WHERE isMuted='.$muted.' AND role = '.$role;
 		
 		$results = $connBDD->query($req);
-		if($results) {
-			$tab = $results->fetchAll(PDO::FETCH_ASSOC);
+		$tab = $results->fetchAll(PDO::FETCH_ASSOC);
+		if(!empty($tab)) {
+			?>
+			<option value="">-- Select a member --</option>
+			<?php
 			foreach ($tab as $key => $value) {
 				echo '<option value="'.$tab[$key]['id'].'">'.$tab[$key]['id'].' | '.$tab[$key]['name'].'</option>';
 			}
 		}
 		else {
-			echo '<option value="">No result...</option>';
+			echo '<option value="" disabled selected>No member to select...</option>';
 		}
 		
 	}
 
 	function displaySelectRole($role) {
 		$connBDD = DBConnection();
-		$req = 'SELECT id,name FROM users WHERE role = '.$role;
-		$results = $connBDD->query($req);
-		if($results) {
-			$tab = $results->fetchAll(PDO::FETCH_ASSOC);
+		//$req = 'SELECT id,name FROM users WHERE role = '.$role;
+		$request = $connBDD->query('SELECT id,name FROM users WHERE role = '.$role);
+		$tab = $request->fetchAll(PDO::FETCH_ASSOC);
+		if(!empty($tab)) {
+			?>
+			<option value="">-- Select a member --</option>
+			<?php
 			foreach ($tab as $key => $value) {
 				echo '<option value="'.$tab[$key]['id'].'">'.$tab[$key]['id'].' | '.$tab[$key]['name'].'</option>';
 			}
