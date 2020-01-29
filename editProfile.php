@@ -58,9 +58,31 @@
 							$req_login_info = 'SELECT name,password,email FROM users WHERE id='.$_SESSION['userID'].'';
 							$results = $connBDD->query($req_login_info);
 							$line = $results->fetch();
-							echo '<input type="hidden" name="currentUsername" value="'.$line['name'].'">';
-							echo '<input type="hidden" name="currentEmail" value="'.$line['email'].'">';
-							include('forms/editAccInfoForm.html');
+							?>
+							<div class="col-md-12 m-auto text-center">
+								<h1 class="page_name text-center">Edit login informations</h1>
+								<form method="POST">
+									<div class="row">
+										<div class="col-sm-5 form-part">
+											<p><label for="editUsername">Username</label></p>
+											<input type="text" class="form-control" name="editUsername" id="editUsername" value="<?php echo $line['name']; ?>" required>
+										</div>
+										<div class="col-sm-2"></div>
+										<div class="col-sm-5 form-part">
+											<p><label for="editEmail">E-Mail address</label></p>
+											<input type="text" class="form-control" name="editEmail" id="editEmail" value="<?php echo $line['email']; ?>" required>
+										</div>
+										<div class="col-sm-12"><br/></div>
+										<div class="col-sm-12 form-part">
+											<p><label for="editConfirmation">Password confirmation</label></p>
+											<input type="password" class="form-control" name="editConfirmation" id="editConfirmation" required>
+										</div>
+									</div>
+									<br/>
+									<input type="submit" name="submit" class="btn btn-primary" id="submit" value="Confirm new account details">
+								</form>
+							</div>
+							<?php
 						break;
 
 						case 'Change password':
@@ -115,97 +137,106 @@
 								<p>Refresh your profile page to see changes</p>
 								<?php
 							}
-							echo '<a href="index.php?page=profile&user='.$_SESSION['userName'].'">Return to your page</a>';
+							?>
+							<p><a href="index.php?page=profile&user=<?php echo $_SESSION['userName']; ?>">Return to your page</a></p>
+							<?php
 						break;
 
 						case 'Confirm new password':
 							if(!empty($_POST['currentPass']) && !empty($_POST['editPass']) && !empty($_POST['confEditPass'])) {
-								if($_POST['user'] != $_SESSION['userName']) {
-									echo "<p class='loginFailed'>You're not allowed to edit someone else's password</p>";
-									echo '<a href="index.php?page=yourPage">Return to your page</a>';
+								include("hash.php");
+								$hashed_password = crypt(''.$_POST['currentPass'].'', "$hash");
+								$requestCheckUser = $connex_PDO->query('SELECT id FROM users WHERE name = "'.$_SESSION['userName'].'" AND password = "'.$hashed_password.'"');
+								if(empty($requestCheckUser->fetch())) {
+									?>
+									<p class="failed">Wrong password !</p>
+									<p><a href="index.php?page=profile&user=<?php echo $_SESSION['userName']; ?>">Return to your page</a></p>
+									<?php
+								}
+								else if($_POST['editPass'] != $_POST['confEditPass']) {
+									?>
+									<p class="failed">New password and confirmation don't match !</p>
+									<p><a href="index.php?page=profile&user=<?php echo $_SESSION['userName']; ?>">Return to your page</a></p>
+									<?php
 								}
 								else {
-									$connBDD = DBConnection();
-									$req_update_pass = 'UPDATE users SET `password` = "'.$_POST['editPass'].'" WHERE `name`="'.$_SESSION['userName'].'"';
-									$results = $connBDD->exec($req_update_pass);
+									$hashed_password = crypt(''.$_POST['editPass'].'', "$hash");
+									$results = $connex_PDO->exec('UPDATE users SET `password` = "'.$hashed_password.'" WHERE `id`="'.$_SESSION['userID'].'"');
 									if($results) {
-										echo '<p class="loginDone">Password updated !</p>';
-										echo '<a href="index.php?page=yourPage">Return to your page</a>';
+										?>
+										<p class="success">Password updated !</p>
+										<p>You'll have to use your new password at your next connection.</p>
+										<p><a href="index.php?page=profile&user=<?php echo $_SESSION['userName']; ?>">Return to your page</a></p>
+										<?php
 									}
 									else {
-										echo '<p class="loginFailed">Failed to update password</p>';
+										?>
+										<p class="failed">Failed to update your password</p>
+										<p><a href="index.php?page=profile&user=<?php echo $_SESSION['userName']; ?>">Return to your page</a></p>
+										<?php
 									}
 								}
 							}
 							else {
-								echo '<p class="loginFailed">Form is not filled properly</p>';
-								echo '<a href="index.php?page=yourPage">Return to your page</a>';
+								?>
+								<p class="failed">Please fill every field of the form.</p>
+								<p><a href="index.php?page=profile&user=<?php echo $_SESSION['userName']; ?>">Return to your page</a></p>
+								<?php
 							}
 						break;
 
 						case 'Confirm new account details':
 							if($_POST) {
-								if($_POST['editUsername'] == 'NOCHANGE' && $_POST['editEmail'] == 'NOCHANGE') {
-									echo '<p>Nothing to change</p>';
-									echo '<a href="index.php?page=yourPage">Return to your page</a>';
+								?>
+								<div class="col-md-12">
+								<?php
+								if(empty($_POST['editUsername']) || empty($_POST['editEmail']) || empty($_POST['editConfirmation'])) {
+									?>
+									<p class="failed">Please fill every field of the form</p>
+									<p><a href="index.php?page=profile&user=<?php echo $_SESSION['userName']; ?>">Return to home page</a></p>
+									<?php
 								}
 								else {
-									if($_POST['editUsername'] == 'NOCHANGE' || empty($_POST['editUsername'])) {
-										$editUsername = '';
+									include("hash.php");
+									$hashed_password = crypt(''.$_POST['editConfirmation'].'', "$hash");
+									$requestCheckUser = $connex_PDO->query('SELECT id FROM users WHERE name = "'.$_SESSION['userName'].'" AND password = "'.$hashed_password.'"');
+									if(empty($requestCheckUser->fetch())) {
+										?>
+										<p class="failed">Wrong password !</p>
+										<p><a href="index.php?page=profile&user=<?php echo $_SESSION['userName']; ?>">Return to home page</a></p>
+										<?php
+									}
+									else if (!preg_match( " /^[^\W][a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,4}$/ " , $_POST['editEmail'] ) ) {
+										?>
+										<p class="failed">Your email address is improper</p>
+										<p><a href="index.php?page=profile&user=<?php echo $_SESSION['userName']; ?>">Return to home page</a></p>
+										<?php
+									}
+									else if(strlen($_POST['editUsername']) < 4) {
+										?>
+										<p class="failed">Your username is not long enough (at least 4 characters)</p>
+										<p><a href="index.php?page=profile&user=<?php echo $_SESSION['userName']; ?>">Return to home page</a></p>
+										<?php
 									}
 									else {
-										$editUsername = $_POST['editUsername'];
-									}
-
-									if($_POST['editEmail'] == 'NOCHANGE' || empty($_POST['editEmail'])) {
-										$editEmail = '';
-									}
-									else {
-										$editEmail = $_POST['editEmail'];
-									}
-
-									$req_available = 'SELECT id FROM users WHERE name="'.$editUsername.'" OR email = "'.$editEmail.'"';
-									$results_available = $connBDD->query($req_available);
-									$line = $results_available->fetch();
-									if(!empty($line)) {
-										echo '<p class="loginFailed">Account details modification failed</p>';
-										echo '<p class="loginFailed">Username or email is taken</p>';
-										echo '<a href="index.php?page=yourPage">Return to your page</a>';
-									}
-									else {
-										if($editUsername == '') {
-											$editUsername = $_POST['currentUsername'];
-											echo "Replace by current username";
-										} 
-										else {
-											$renamepp = rename('images/users_avatar/'.$_POST['currentUsername'].'.png','images/users_avatar/'.$editUsername.'.png');
-											if($renamepp) 
-												echo '<p class="loginDone">Profile picture renamed</p>';
-											
-											else 
-												echo '<p class="loginFailed">Profile picture rename failed</p>';
-										}
-										if($editEmail == '') {
-											$editEmail = $_POST['currentEmail'];
-										}
-										$req_edit_logins = 'UPDATE users SET `name`="'.$editUsername.'",`email`="'.$editEmail.'",`profile_pic` = "images/users_avatar/'.$editUsername.'.png" WHERE `id` ="'.$_SESSION['userID'].'"';
-										$return = $connBDD->exec($req_edit_logins);
-										if($return) {
-											echo '<p class="loginDone">Account details successfully modified</p>';
-											echo '<p>You should disconnect to apply modifications';
-											echo '<a href="index.php?page=yourPage">Return to your page</a>';
+										$requestUpdate = $connex_PDO->exec('UPDATE users SET name = "'.$_POST['editUsername'].'", email = "'.$_POST['editEmail'].'" WHERE id='.$_SESSION['userID']);
+										if($requestUpdate) {
+											?>
+											<p class="success">Your login informations are updated, you have to log you out to apply changes.</p>
+											<a href="index.php?page=logout" id="logout_link">Logout</a>
+											<?php
 										}
 										else {
-											echo '<p class="loginFailed">Account details modification failed</p>';
-											echo '<a href="index.php?page=yourPage">Return to your page</a>';
+											?>
+											<p class="failed">Failed to update your login informations.</p>
+											<p><a href="index.php?page=profile&user=<?php echo $_SESSION['userName']; ?>">Return to home page</a></p>
+											<?php
 										}
-
 									}
 								}
-							}
-							else {
-								echo '<p class="loginFailed">No change found</p>';
-								echo '<a href="index.php?page=yourPage">Return to your page</a>';
+								?>
+								</div>
+								<?php
 							}
 							break;
 
@@ -216,8 +247,10 @@
 					}
 				}
 				else {
-					echo '<tr><th><p class="loginFailed">Access denied</p></th></tr>';
-					echo '<tr><td><p><a href="index.php?page=yourPage">Return to home page</a></p></td></tr>';
+					?>
+					<p class="failed">Access denied</p>
+					<p><a href="index.php?page=profile&user=<?php echo $_SESSION['userName']; ?>">Return to home page</a></p>
+					<?php
 				}
 			?>
 		</table>

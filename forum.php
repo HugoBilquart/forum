@@ -49,22 +49,22 @@
 	$title = "Every topics";
 	if($_POST) {
 		if(isset($_POST['search'])) {
-			$request = $request. 'WHERE theme LIKE "%'.$_POST['search'].'%" OR topic_name LIKE "%'.$_POST['search'].'%" ORDER BY creation_date DESC';
+			$request = $request. 'WHERE theme LIKE "%'.$_POST['search'].'%" OR topic_name LIKE "%'.$_POST['search'].'%" AND visible = 1 ORDER BY creation_date DESC';
 			$title = $_POST['search'];
 		}
 	}
 	else if(isset($_GET['category'])) {
 		if($_GET['category'] == 'home') {
-			$request = $request. 'WHERE theme = "rules" OR theme = "announce" OR theme = "changelogs" ORDER BY theme DESC';
+			$request = $request. 'WHERE visible = 1 AND theme = "rules" OR theme = "announce" OR theme = "changelogs" ORDER BY theme DESC';
 			$title = "Home";
 		}
 		else {
-			$request = $request. 'WHERE theme LIKE "%'.$_GET['category'].'%" ORDER BY creation_date DESC';
+			$request = $request. 'WHERE theme LIKE "%'.$_GET['category'].'%" AND visible = 1 ORDER BY creation_date DESC';
 			$title = $_GET['category'];
 		}
 	}
 	else {
-		$request = $request.'ORDER BY creation_date DESC';
+		$request = $request.'AND visible = 1 ORDER BY creation_date DESC';
 	}
 
 	$response = $connex_PDO->query($request);
@@ -105,13 +105,11 @@
 									//Folder icon depending of topic creation date or completed state
 									$countDay = date_diff(date_create(date('Y-m-d')),date_create($articles[$key]['creation_date']))->format('%d');
 									//An topic is considered as "new" if it's less than 7 days old.
-									if($countDay > 7) {
-										if($articles[$key]['complete'] == 0) {
-											$src_folder = "default";
-										}
-										else {
-											$src_folder = "complete";
-										}
+									if($articles[$key]['complete'] == 1) {
+										$src_folder = "complete";
+									}
+									else if($countDay > 7) {
+										$src_folder = "default";
 									}
 									else {
 										$src_folder = "new";

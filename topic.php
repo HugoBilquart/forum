@@ -38,7 +38,7 @@
 		 > <a href="index.php?page=forum&category='.$line["theme"].'" class="userLink">'.$line["theme"].'</a> 
 		 > '.$topic_name.' [ #'.$line["id"].' ]</p>';
 
-	$req_msg = 'SELECT users.id,name,role,profile_pic,signature,publish_date,content FROM users INNER JOIN messages ON users.id = messages.id_user WHERE messages.id_topic ='.$_GET["value"];
+	$req_msg = 'SELECT users.id,name,role,profile_pic,signature,publish_date,content,visible FROM users INNER JOIN messages ON users.id = messages.id_user WHERE messages.id_topic ='.$_GET["value"];
 	$msg = $connBDD->query($req_msg);
 	$msg_data = $msg->fetchAll(PDO::FETCH_ASSOC);
 
@@ -55,11 +55,13 @@
 		$topic_signature = $msg_data[$i]['signature'];
 		$topic_publishDate = $msg_data[$i]['publish_date'];
 		$topic_content = $msg_data[$i]['content'];
+		$topic_visible = $msg_data[$i]['visible'];
 		$regExpHref = '#((https?|ftp)://(\S*?\.\S*?))([\s)\[\]{},;"\':<]|\.\s|$)#i';
 		if(preg_match($regExpHref,$topic_signature)) {
 			$topic_signature = '<a href="'.$topic_signature.'">'.$topic_signature.'</a>';
 		}
 
+		if($topic_visible == 1) {
 		?>
 			<div class="col-md-11 topic-message">
 				<div class="row border">
@@ -85,6 +87,16 @@
 				</div>
 			</div>
 			<?php
+		}
+		else {
+		?>
+			<div class="col-md-11 deleted-message border text-center">
+				<br/>
+				<p>Message deleted</p>
+				<br/>
+			</div>
+		<?php
+		}
 	}
 ?>
 	

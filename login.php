@@ -3,7 +3,7 @@
 		<legend>Login</legend>
 		<table>
 			<tr>
-				<td><label>Username</label></td>
+				<td><label>Email</label></td>
 				<td><input type="text" name="userLogin" class="form-control"></td>
 			</tr>
 			<tr>
@@ -30,7 +30,7 @@
 						include("hash.php");
 						$hashed_password = crypt("$pass", "$hash");
 
-						$req = 'SELECT id,name,role,profile_pic,isMuted FROM users WHERE name="'.$_POST['userLogin'].'" AND password="'.$hashed_password.'"';
+						$req = 'SELECT id,name,role,profile_pic,isMuted FROM users WHERE email="'.$_POST['userLogin'].'" AND password="'.$hashed_password.'"';
 						$results = $connBDD->query($req);
 						$line = $results->fetch();
 						if(empty($line)) {

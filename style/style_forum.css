@@ -109,6 +109,11 @@ textarea#newMessageArea {
     background-color: rgb(102,102,102); 
 }
 
+.deleted-message {
+    margin: auto;
+    background-color: rgba(41, 41, 41, 0.4);
+}
+
 .name-area {
     border-right: solid 1px white;
 }

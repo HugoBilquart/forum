@@ -8,7 +8,7 @@
 	<head>
 		<title>IT Solutions</title>
 		<meta charset="utf-8">
-		<link rel="icon" href="images/icons/website_icon.png" type="image/x-icon">
+		<link rel="icon" href="images/website_icon.png" type="image/x-icon">
 		<link rel="stylesheet" type="text/css" href="style/style.css">
 		<link rel="stylesheet" type="text/css" href="style/style_menu.css">
 		<link rel="stylesheet" type="text/css" href="style/style_forum.css">
