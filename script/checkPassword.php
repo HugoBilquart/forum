@@ -11,7 +11,10 @@ function DBConnection() {
 }
 
 $db = DBConnection();
-$query = 'SELECT * FROM users WHERE name = "'.$_POST['username'].'" AND password = "'.$_POST['currentPass'].'"';
+include("../hash.php");
+$hashed_password = crypt(''.$_POST['currentPass'].'', "$hash");
+
+$query = 'SELECT * FROM users WHERE name = "'.$_POST['username'].'" AND password = "'.$hashed_password.'"';
 
 $return = $db->query($query);
 

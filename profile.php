@@ -38,7 +38,7 @@ if($info != 404) {
 						<span class="name"><?php echo $info['name']; ?></span>
 					</li>
 					<li class="list-group-item">
-						<span class="role">
+						<span class="role <?php echo strtolower($info['role']).'_role';?>">
 							<?php echo $info['role']; ?>
 						</span>
 					</li>
@@ -92,15 +92,18 @@ if($info != 404) {
 				<form action="index.php?page=editProfile" method="POST">
 					<div class="row">
 						<div class="col-sm-12 text-center">
-							<span>Edit profile</span>
+							<p>Edit profile</p>
 						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-3">
 							<input type="submit" name="submit" class="btn btn-primary" value="Edit profile details">
 						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-3">
 							<input type="submit" name="submit" class="btn btn-primary" value="Change avatar">
 						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-3">
+							<input type="submit" name="submit" class="btn btn-danger" value="Edit account informations">
+						</div>
+						<div class="col-sm-3">
 							<input type="submit" name="submit" class="btn btn-danger" value="Change password">
 						</div>		
 					</div>

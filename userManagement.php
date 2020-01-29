@@ -3,11 +3,6 @@
 		if($_SESSION) {
 			if ($_SESSION['role'] > 1) {
 				echo '<h1 class="page_name">User management page</h1>';
-				$req_muted = 'SELECT id,name FROM users WHERE role = 1 AND isMuted = 1';
-
-				$req_banned = 'SELECT id,name FROM users WHERE role = 0';
-
-				$req_members = 'SELECT id,name FROM users WHERE role = 1 AND isMuted = 0';
 			}
 			else {
 				echo "<script type='text/javascript'> window.location = 'index.php?page=home'; </script>";
@@ -21,12 +16,12 @@
 			if(isset($_POST['userAction'])) {
 				switch ($_POST['userAction']) {
 					case '🔓':
-						$req = 'UPDATE users SET role = 1 WHERE id="'.$_POST['memberToUnban'].'"';
+						$req = 'UPDATE users SET role = 1 WHERE id="'.$_POST['memberToForgive'].'"';
 						$results = $connBDD->exec($req);
 						break;
 					
 					case '🔨':
-						$req = 'UPDATE users SET role = 0 WHERE id="'.$_POST['memberToBan'].'"';
+						$req = 'UPDATE users SET `role` = "0" , `isMuted` = "1" WHERE id="'.$_POST['memberToBan'].'"';
 						$results = $connBDD->exec($req);
 						break;
 	
@@ -63,20 +58,22 @@
 	<form method="POST">
 		<div class="row">
 			<div class="col-sm-4 userAction">
-				<select name="memberToMute" class="form-control">
-					
+				<p><label for="muteMember">Mute a member</label></p>
+				<select name="memberToMute" id="muteMember" class="form-control">
 					<?php displaySelect(0,1); ?>
 					<input type="submit" name="userAction" value="🔇" title="Mute selected member">
 				</select>
 			</div>
 			<div class="col-sm-4 userAction">
-				<select name="memberToUnmute" class="form-control">
+				<p><label for="unmuteMember">Unmute a member</label></p>
+				<select name="memberToUnmute" id="unmuteMember" class="form-control">
 					<?php displaySelect(1,1); ?>
 				</select>
 				<input type="submit" name="userAction" value="🔊" >
 			</div>
 			<div class="col-sm-4 userAction">
-				<select name="memberToBan" class="form-control">
+				<p><label for="banMember">Ban a member</label></p>
+				<select name="memberToBan" id="banMember" class="form-control">
 					<?php displaySelectRole(1); ?>
 				</select>
 				<input type="submit" name="userAction" value="🔨">
@@ -223,7 +220,8 @@ if($nbBanned > 0) {
 <div class="col-md-12 text-center" id="bannedPart">
 	<p>Banned members - <?php echo $nbBanned; ?></p>
 	<form method="POST">
-		<select name="memberToUnban" class="form-control userAction">
+		<p><label for="forgiveBanned">Forgive a banned member</label></p>
+		<select name="memberToForgive" id="forgiveBanned" class="form-control userAction">
 		<?php
 			displaySelectRole(0);
 		?>

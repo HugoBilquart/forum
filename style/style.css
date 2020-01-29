@@ -338,6 +338,11 @@ span.admin_role {
 	font-weight: 				bold;
 }
 
+span.administrator_role {
+	color: 						red;
+	font-weight: 				bold;
+}
+
 /* END Memberlist */
 
 /* START Register */

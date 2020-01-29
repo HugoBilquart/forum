@@ -317,7 +317,7 @@
 	function getUserInfoProfile($user) {
 		$connBDD = DBConnection();
 		
-			$req = $connBDD->prepare('SELECT id,name,password,role,profile_pic,country,birth_date,biography,signature,registration_date,video_link FROM users WHERE name = :user ');
+			$req = $connBDD->prepare('SELECT id,name,password,role,profile_pic,country,birth_date,biography,signature,registration_date FROM users WHERE name = :user ');
 			$req->execute(array(
 				'user' => $user
 			));
@@ -352,10 +352,7 @@
 
 				if(empty($info['birth_date']))
 					$info['birth_date'] = "<span class='emptyDetail'>Undefined</span>";
-
-				if($info['video_link'] == '')
-					$info['video_link'] = 'https://www.youtube.com/embed/iGpuQ0ioPrM';
-
+					
 				return $info;
 			}
 			
