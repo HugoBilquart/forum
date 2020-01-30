@@ -35,7 +35,7 @@ if($info != 404) {
 			<div class="col-sm-6 profile_page border">
 				<ul class="list-group">
 					<li class="list-group-item">
-						<span class="name"><?php echo $info['name']; ?></span>
+						<h2 class="name"><?php echo $info['name']; ?></h2>
 					</li>
 					<li class="list-group-item">
 						<span class="role <?php echo strtolower($info['role']).'_role';?>">

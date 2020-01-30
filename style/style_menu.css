@@ -29,11 +29,15 @@ nav {
 	transform: translateY(3px);
 }
 
+a.navbar-brand {
+	color: rgb(0, 153, 255);
+}
+
 a.nav-link {
 	color: 						white;
 	text-decoration: 			none;
-	-moz-transition-property:   color;
-    -moz-transition-duration:   1s;
+	transition-property:   		color;
+    transition-duration:   		1s;
 }
 
 a.nav-link:hover {

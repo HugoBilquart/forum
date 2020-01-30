@@ -1,26 +1,30 @@
 <?php
-	if($_POST) {
+	if($_POST && $_POST['submit'] == "Publish message") {
 		?>
 		<div class="col-md-11 topic-message text-center">
 		<?php
-		$req_check = 'SELECT * FROM messages WHERE id_user = '.$_SESSION['userID'].' AND id_topic = '.$_GET['value'].' AND content = "'.$_POST['newMessageArea'].'"';
-		$check = $connBDD->query($req_check)->fetch();
-
-		if(!empty($check)) {
-			echo "<p class='loginFailed'>This message is already post in the topic (don't flood topics)</p>";
+		if(empty($_POST['newMessageArea'])) {
+			echo "<p class='dailed'>You can't publish empty message !</p>";
 		}
 		else {
-			$req_new_message = 'INSERT INTO messages(id_topic,id_user,publish_date,content) VALUES ('.$_GET['value'].','.$_SESSION['userID'].',"'.date('d/m/Y H:i:s').'","'.$_POST['newMessageArea'].'")';
-			$publish = $connBDD->exec($req_new_message);
-			
-			if($publish) {
-				echo "<p class='loginDone'>Message successfully published !</p>";
-				$connBDD->exec('UPDATE messages SET nb_message = nb_message + 1 WHERE id = '.$_GET['value']);
+			$req_check = 'SELECT * FROM messages WHERE id_user = '.$_SESSION['userID'].' AND id_topic = '.$_GET['value'].' AND content = "'.$_POST['newMessageArea'].'"';
+			$check = $connBDD->query($req_check)->fetch();
+
+			if(!empty($check)) {
+				echo "<p class='dailed'>This message is already post in the topic (don't flood topics)</p>";
 			}
 			else {
-				echo "\nPDO::errorInfo():\n";
-				print_r($connBDD->errorInfo());
-				echo "<p class='loginFailed'>Message wasn't add</p>";
+				$req_new_message = 'INSERT INTO messages(id_topic,id_user,publish_date,content) VALUES ('.$_GET['value'].','.$_SESSION['userID'].',"'.date('d/m/Y H:i:s').'","'.$_POST['newMessageArea'].'")';
+				$publish = $connBDD->exec($req_new_message);
+				
+				if($publish) {
+					echo "<p class='success'>Message successfully published !</p>";
+				}
+				else {
+					echo "\nPDO::errorInfo():\n";
+					print_r($connBDD->errorInfo());
+					echo "<p class='failed'>Message wasn't add</p>";
+				}
 			}
 		}
 		?>
@@ -28,7 +32,7 @@
 		<?php
 	}
 
-	$req = 'SELECT id,theme,topic_name,topic_owner,nb_message,options,complete FROM topics WHERE id="'.$_GET['value'].'"';
+	$req = 'SELECT id,theme,topic_name,topic_owner,options,complete FROM topics WHERE id="'.$_GET['value'].'"';
 	$results = $connBDD->query($req);
 	$line = $results->fetch();
 	$topic_name = $line["topic_name"];
@@ -40,7 +44,7 @@
 
 	$req_msg = 'SELECT users.id,name,role,profile_pic,signature,publish_date,content,visible FROM users INNER JOIN messages ON users.id = messages.id_user WHERE messages.id_topic ='.$_GET["value"];
 	$msg = $connBDD->query($req_msg);
-	$msg_data = $msg->fetchAll(PDO::FETCH_ASSOC);
+	$msg_data = $msg->fetchAll();
 
 
 	$req_count = 'SELECT count(id) AS count FROM messages WHERE id_topic = '.$_GET["value"];

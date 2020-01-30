@@ -51,10 +51,10 @@
 			}
 		}
 	}
-	$request_topic_removable = $connBDD->query('SELECT topics.id,topic_name,topic_owner,role,nb_message FROM topics INNER JOIN users ON topics.id = users.id WHERE users.role < 3');
+	$request_topic_removable = $connBDD->query('SELECT topics.id,topic_name,topic_owner,creation_date,role FROM topics INNER JOIN users ON topics.id = users.id WHERE users.role < 3');
 	$tab_removable = $request_topic_removable->fetchAll(PDO::FETCH_ASSOC);
 
-	$request_topic_not_complete = $connBDD->query('SELECT topics.id,topic_name,topic_owner,role,nb_message FROM topics INNER JOIN users ON topics.id = users.id WHERE users.role < 3 AND complete = 0');
+	$request_topic_not_complete = $connBDD->query('SELECT topics.id,topic_name,topic_owner,creation_date,role FROM topics INNER JOIN users ON topics.id = users.id WHERE users.role < 3 AND complete = 0');
 	$tab_not_complete = $request_topic_not_complete->fetchAll(PDO::FETCH_ASSOC);
 ?>
 </div>
@@ -68,7 +68,7 @@
 					<option value="">Select a topic</option>
 					<?php
 						foreach ($tab_removable as $key => $values) {
-							echo '<option value="'.$tab_removable[$key]['id'].'">#'.$tab_removable[$key]['id'].' - '.$tab_removable[$key]['topic_name'].' | By '.$tab_removable[$key]['topic_owner'].' | '.$tab_removable[$key]['nb_message'].' message(s)</option>';
+							echo '<option value="'.$tab_removable[$key]['id'].'">#'.$tab_removable[$key]['id'].' - '.$tab_removable[$key]['topic_name'].' | By '.$tab_removable[$key]['topic_owner'].' | '.date('d/m/Y',strtotime($tab_removable[$key]['creation_date'])).'</option>';
 						}
 					?>
 				</select>
@@ -84,7 +84,7 @@
 					<option value="">Select a topic</option>
 					<?php
 						foreach ($tab_not_complete as $key => $values) {
-							echo '<option value="'.$tab_not_complete[$key]['id'].'">N°'.$tab_not_complete[$key]['id'].' - '.$tab_not_complete[$key]['topic_name'].' | By '.$tab_not_complete[$key]['topic_owner'].' | '.$tab_not_complete[$key]['nb_message'].' message(s)</option>';
+							echo '<option value="'.$tab_not_complete[$key]['id'].'">N°'.$tab_not_complete[$key]['id'].' - '.$tab_not_complete[$key]['topic_name'].' | By '.$tab_not_complete[$key]['topic_owner'].' | '.date('d/m/Y',strtotime($tab_removable[$key]['creation_date'])).'</option>';
 						}
 					?>
 				</select>
@@ -100,7 +100,7 @@
 					<option value="">Select a topic</option>
 					<?php
 						foreach ($tab_removable as $key => $values) {
-							echo '<option value="'.$tab_removable[$key]['id'].'|'.$tab_removable[$key]['topic_name'].'">#'.$tab_removable[$key]['id'].' - '.$tab_removable[$key]['topic_name'].' | By '.$tab_removable[$key]['topic_owner'].' | '.$tab_removable[$key]['nb_message'].' message(s)</option>';
+							echo '<option value="'.$tab_removable[$key]['id'].'|'.$tab_removable[$key]['topic_name'].'">#'.$tab_removable[$key]['id'].' - '.$tab_removable[$key]['topic_name'].' | By '.$tab_removable[$key]['topic_owner'].' | '.date('d/m/Y',strtotime($tab_removable[$key]['creation_date'])).'</option>';
 						}
 					?>
 				</select>

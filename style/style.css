@@ -37,7 +37,7 @@ h2 {
 }
 
 #top, #session_data, #footer {
-	background: 				#7c7c7c;
+	background: 				#757575;
 }
 
 #top {
@@ -95,7 +95,7 @@ a {
 }
 
 a.userLink {
-	color: 						#83caf7;
+	color: 						#24abff;
 	text-decoration:			none;
 	transition-duration:		0.3s;
 }
@@ -111,7 +111,7 @@ a.userLink:hover {
 }
 
 a.linkLogin {
-	color: 						#3d4aff;
+	color: 						#000000;
 	font-size: 					large;
 	font-weight: 				bold;
 	text-decoration: 			none;
@@ -225,6 +225,19 @@ img.birthday_pp {
 
 img.lastRegistered_pp {
 	width: 100px;
+}
+
+.homepage-link {
+	color: #00c3ff;
+	text-decoration: none;
+
+	transition-property: color;
+	transition-duration: 0.4s;
+}
+
+.homepage-link:hover {
+	color: cyan;
+	text-decoration: none;
 }
 
 /* END Homepage */

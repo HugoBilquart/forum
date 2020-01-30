@@ -35,22 +35,9 @@
 	color: cyan;
 }
 
-td.personal_page {
-	padding: 		10px;
-}
-
-td#editProfileButtons {
-	text-align: 	center;
-	padding: 		30px;
-}
-
-td#personal_page_pp {
-	border: 		solid white 1px;
-}
-
-span.name {
-	font-size: 		50px;
-	font-weight: 	bold;
+h2.name {
+	font-weight: bold;
+	padding-top: 5%;
 }
 
 span.role {

@@ -1,7 +1,7 @@
 <?php
 
 function DBConnection() {
-	$dbconn = new PDO('sqlite:../db/db_project.sqlite');
+	$dbconn = new PDO('sqlite:../db/db.sqlite');
 	if($dbconn) {
 		return $dbconn;
 	}

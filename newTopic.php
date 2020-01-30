@@ -11,10 +11,12 @@
 
 		if($_POST) {
 			if($_POST['submit'] == 'Publish topic') {
-				$connBDD = DBConnection();
 				$creation_date = date('Y-m-d');
-				$req_topic = 'INSERT INTO topics(topic_name,topic_owner,options,theme,nb_message,creation_date,complete) VALUES ("'.$_POST['newTopic_name'].'","'.$_SESSION['userName'].'","'.$_POST['newTopic_options'].'","'.$_POST['newTopic_theme'].'","1","'.$creation_date.'","0")';
-				$check = $connBDD->exec($req_topic);
+				if(empty($_POST['newTopic_options'])) {
+					$_POST['newTopic_options'] == '';
+				}
+				$req_topic = 'INSERT INTO topics(topic_name,topic_owner,options,theme,creation_date,complete) VALUES ("'.$_POST['newTopic_name'].'","'.$_SESSION['userName'].'","'.$_POST['newTopic_options'].'","'.$_POST['newTopic_theme'].'","'.$creation_date.'","0")';
+				$check = $connex_PDO->exec($req_topic);
 				if($check) {
 					echo "<p class='success'>Topic successfully published !</p>";
 					$req_id_topic = 'SELECT id FROM topics WHERE topic_name = "'.$_POST['newTopic_name'].'" AND creation_date = "'.$creation_date.'"';

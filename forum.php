@@ -64,7 +64,7 @@
 		}
 	}
 	else {
-		$request = $request.'AND visible = 1 ORDER BY creation_date DESC';
+		$request = $request.'WHERE visible = 1 ORDER BY creation_date DESC';
 	}
 
 	$response = $connex_PDO->query($request);
@@ -132,7 +132,13 @@
 												}
 											?>
 										</td>
-										<td><span><?php echo $articles[$key]['nb_message']; ?></span></td>
+										<td>
+											<?php
+												$requetes_messages = $connex_PDO->query('SELECT count(*) AS count_msg FROM messages WHERE id_topic = '.$articles[$key]['id'].' AND visible = 1');
+												$count = $requetes_messages->fetch();
+											?>
+											<span><?php echo $count['count_msg']; ?></span>
+										</td>
 										<td>
 											<?php
 												$req_last_msg = $connex_PDO->query('SELECT publish_date FROM messages WHERE id_topic ='.$articles[$key]['id'].' ORDER BY publish_date DESC LIMIT 1');

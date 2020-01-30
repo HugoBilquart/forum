@@ -133,7 +133,7 @@
 				<div class="col-sm-12" id="footer">
 					<span class="footer_title">IT Solutions - Created and Designed by Hugo BILQUART</span>
 					<br/>
-					<span class="footer_title">© - IT Solutions™ - v3</span>
+					<span class="footer_title">© - IT Solutions™ - v4</span>
 				</div>
 			</div>
 			

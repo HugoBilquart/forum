@@ -11,7 +11,7 @@
 				<td><input type="password" name="passLogin" class="form-control"></td>
 			</tr>
 			<tr>
-				<td>
+				<td colspan="2">
 					<input type="submit" name="submit" value="Login" class="btn btn-primary">
 				</td>
 			</tr>

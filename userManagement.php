@@ -17,11 +17,13 @@
 				switch ($_POST['userAction']) {
 					case '🔓':
 						$req = 'UPDATE users SET role = 1 WHERE id="'.$_POST['memberToForgive'].'"';
+						$req = 'UPDATE messages SET `visible` = "1" WHERE id_user="'.$_POST['memberToForgive'].'"';
 						$results = $connBDD->exec($req);
 						break;
 					
 					case '🔨':
 						$req = 'UPDATE users SET `role` = "0" , `isMuted` = "1" WHERE id="'.$_POST['memberToBan'].'"';
+						$req = 'UPDATE messages SET `visible` = "0" WHERE id_user="'.$_POST['memberToBan'].'"';
 						$results = $connBDD->exec($req);
 						break;
 	

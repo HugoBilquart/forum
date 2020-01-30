@@ -18,11 +18,11 @@
 			<tr>
 				<th scope="row">
 					
-					<a href="index.php?page=forum&category=<?php echo $info['theme']; ?>">
+					<a class="homepage-link" href="index.php?page=forum&category=<?php echo $info['theme']; ?>">
 						<?php echo $info["theme"]; ?>
 					</a> 
 					<b> > </b> 
-					<a href="index.php?page=topic&value=<?php echo $info['id']; ?>">
+					<a class="homepage-link" href="index.php?page=topic&value=<?php echo $info['id']; ?>">
 						<?php echo $info["topic_name"]; ?>
 					</a>
 				</th>
@@ -64,7 +64,7 @@
 	<table class="table table-dark table-bordered homepage-table">
 		<thead>
 			<tr>
-				<th scope="row" colspan="2">
+				<th scope="row">
 					Last registered member : <?php echo $info["registration_date"]; ?>
 				</th>
 			</tr>
@@ -74,7 +74,7 @@
 				<td>
 					<img src="<?php echo $info['profile_pic']; ?>" class="lastRegistered_pp" alt="<?php echo $info['profile_pic']; ?>">
 					<span>
-						<a href="index.php?page=profile&user=<?php echo $info['name']; ?>">	
+						<a class="homepage-link" href="index.php?page=profile&user=<?php echo $info['name']; ?>">	
 							<?php echo $info['name']; ?>
 						</a>
 					</span>

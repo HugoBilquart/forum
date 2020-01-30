@@ -1,6 +1,7 @@
 <?php
 	function DBConnection() {
-		$dbconn = new PDO('sqlite:db/db_project.sqlite');
+		//$dbconn = new PDO('sqlite:db/db_project.sqlite');
+		$dbconn = new PDO('sqlite:db/db.sqlite');
 		if($dbconn) {
 			return $dbconn;
 		}
@@ -291,7 +292,7 @@
 
 	function lastRegistered() {
 		$connBDD = DBConnection();
-		$req = 'SELECT name,profile_pic,registration_date FROM users ORDER BY id DESC LIMIT 1';
+		$req = 'SELECT name,profile_pic,registration_date FROM users WHERE role > 0 ORDER BY id DESC LIMIT 1';
 
 		$results = $connBDD->query($req);
 
@@ -306,12 +307,20 @@
 		$results = $connBDD->query($req);
 
 		$info = $results->fetch();
-
-		if(strlen($info["content"]) > 50) {
-			$info["content"] = substr($info["content"],0,50).' <a href="index.php?page=topic&value='.$info['id'].'">Read More...</a>' ;
+		
+		if(empty($info)) {
+			return $info;
+		}
+		else {
+			if(strlen($info["content"]) > 50) {
+				$info["content"] = substr($info["content"],0,50).' <a href="index.php?page=topic&value='.$info['id'].'">Read More...</a>' ;
+			}
+			return $info;
 		}
 
-		return $info;
+		
+
+		
 	}
 
 	function getUserInfoProfile($user) {
