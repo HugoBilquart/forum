@@ -1,245 +1,173 @@
-<table>
+<!-- TITLE -->
+<div class="col-md-12">
+	<h1 class="page_name">Welcome on the forum</h1>
+</div>
+
+<!-- TITLE SECONDARY -->
+<div class="col_md-12" id="forum-home-top">
 	<?php
 		if($_POST) {
-			if(isset($_POST['category'])) {
-				echo '<a class="forum_welcome"><u>SEARCH</u> -> '.$_POST["category"].'</a>';
+			if(isset($_POST['search'])) {
+				echo '<h2><a class="forum_welcome"><u>SEARCH</u> -> '.$_POST["search"].'</a></h2>';
 			}
 		}
-		else if(!isset($_GET['category']) OR $_GET['category'] == 'home') {
-			echo '<a class="forum_welcome">Welcome on the forum</a>';
+		else if(isset($_GET['category'])) {
+			echo '<h2><a class="forum_welcome">'.$_GET["category"].'</a></h2>';
 		}
-		else if($_GET['category']) {
-			echo '<a class="forum_welcome">'.$_GET["category"].'</a>';
+		else {
+			echo '<h2><a class="forum_welcome">Topic list</a></h2>';
 		}
-		
 	?>
 	
 	<hr>
+
 	<?php 
 		if($_SESSION AND $_SESSION['isMuted'] == 0) { 
-		echo '<p><a href="index.php?page=newTopic" class="topic_link"><img src="images/folders/add.png" class="topic_folder"> Create a topic</a></p>'; 
+			?>
+				<p>
+					<a href="index.php?page=newTopic" class="topic_link">
+						<img src="images/folders/add.png" class="topic_folder">
+						<span>Create a topic</span>
+					</a>
+				</p>
+			<?php
 		}
 	?>
-	<form method="POST" action="index.php?page=forum"><p class="forum_search">Specific research (keywords, topic) --> <input type="text" name="category"><input type="submit" name="" value="🔍"></p></form>
-</table>
+	<form method="POST" action="index.php?page=forum">
+		<p class="forum_search">Specific research (keywords, topic) --> 
+			<input type="text" name="search">
+			<input type="submit" name="" value="🔍">
+		</p>
+	</form>
+</div>
+<!-- END TITLE SECONDARY -->
 
+<!-- CONTENT -->
+<div class="col-md-12">
 <?php
+	$request = 'SELECT * FROM topics ';
+	$title = "Every topics";
 	if($_POST) {
-		if(isset($_POST['category'])) {
-			$req_count = 'SELECT count(id) AS nb FROM topics WHERE theme LIKE "%'.$_POST['category'].'%" OR topic_name LIKE "%'.$_POST['category'].'%"';
-			$result_count = $connBDD->query($req_count);
-			if($result_count) {
-				$line_count = $result_count->fetch();
-				if($line_count['nb'] == 0) {
-					echo '<table class="topic_category"><tr><th><p class="loginFailed">No topic found</p></th></tr></table>';
-				}
-				else {
-					$req_creation_date = 'SELECT creation_date FROM topics WHERE theme LIKE "%'.$_POST['category'].'%" OR topic_name LIKE "%'.$_POST['category'].'%" ORDER BY creation_date DESC LIMIT 1';
-					$result_creation_date = $connBDD->query($req_creation_date);
-
-					
-					$line = $result_creation_date->fetch();
-					echo '	<table class="topic_category">
-								<tr style="background-color: #009996">
-									<th colspan="4"> Research -> '
-										.$_POST['category'].	
-									'</th>
-									<th colspan="2">
-										Number of articles : '.$line_count['nb'].'
-									</th>
-									<th colspan="2">
-										Last article : '.$line['creation_date'].'
-									</th>
-								</tr>
-							</table>';
-
-					topicTableTop();
-
-					$req = 'SELECT id,topic_name,nb_message,topic_owner FROM topics WHERE theme LIKE "%'.$_POST['category'].'%" OR topic_name LIKE "%'.$_POST['category'].'%" ORDER BY creation_date';
-					echo $req;
-					$results = $connBDD->query($req);
-					$tab = $results->fetchAll(PDO::FETCH_ASSOC);
-					foreach ($tab as $key => $value) {
-						echo "<tr>";
-						foreach ($tab[$key] as $keys => $values) {
-							if($keys == "id") {
-								$id = $values;
-								$req_last_msg = 'SELECT publish_date FROM messages WHERE id_topic ='.$id.' ORDER BY publish_date DESC LIMIT 1';
-								$results_last_msg = $connBDD->query($req_last_msg);
-								$line_last_msg = $results_last_msg->fetch();
-								$last_msg_date = $line_last_msg['publish_date']; 
-							}
-							else if($keys == "topic_name") {
-								$name = $values;
-								$topic_pic = topic_folder($name);
-								echo '	<td class="topic"><img src="'.$topic_pic.'" class="topic_folder"></td>
-										<td class="topic"><a href="index.php?page=topic&value='.$id.'" class="topic_link">'.$name.'</a></td>';
-								echo '<td class="topic"><p class="topic_info">'.$tab[$key]['nb_message'].'</p></td>';
-								echo '<td class="topic"><p class="topic_info">'.$line_last_msg['publish_date'].'</p></td>';
-							}
-						}
-						echo "</tr>";
-					}
-					echo '</table>';
-				}
-			}
+		if(isset($_POST['search'])) {
+			$request = $request. 'WHERE theme LIKE "%'.$_POST['search'].'%" OR topic_name LIKE "%'.$_POST['search'].'%" AND visible = 1 ORDER BY creation_date DESC';
+			$title = $_POST['search'];
 		}
 	}
-	else {	
-		if(!isset($_GET['category']) OR $_GET['category'] == 'home') {
-			$req_title = 'SELECT count(id) AS nb,creation_date FROM topics WHERE theme = "rules" OR theme = "changelogs"';
-			$results = $connBDD->query($req_title);
-			$line = $results->fetch();
-
-			echo '	<table class="topic_category"><tr style="background-color: #009996">
-						<th colspan="4">Rules & Changelogs</th>
-						<th colspan="2">Number of articles : '.$line['nb'].'</th>
-						<th colspan="2">Last article : '.$line['creation_date'].'</th>
-					</tr></table>';
-
-			topicTableTop();
-			$req = 'SELECT id,topic_name,nb_message,topic_owner FROM topics WHERE theme = "rules" OR theme = "changelogs"';
-
-			$results = $connBDD->query($req);
-			
-
-			$tab = $results->fetchAll(PDO::FETCH_ASSOC);
-			
-
-			foreach ($tab as $key => $value) {
-				echo "<tr>";
-				foreach ($tab[$key] as $keys => $values) {
-					if($keys == "id") {
-						$id = $values;
-						$req_last_msg = 'SELECT publish_date FROM messages WHERE id_topic ='.$id.' ORDER BY publish_date DESC LIMIT 1';
-						$results_last_msg = $connBDD->query($req_last_msg);
-						$line = $results_last_msg->fetch();
-					}
-					else if($keys == "topic_name") {
-						$name = $values;
-						$topic_pic = topic_folder($name);
-						echo '	<td class="topic"><img src="'.$topic_pic.'" class="topic_folder"></td>
-								<td class="topic"><a href="index.php?page=topic&value='.$id.'" class="topic_link">'.$values.'</a></td>';
-						echo '<td class="topic"><p class="topic_info">'.$tab[$key]['nb_message'].'</p></td>';
-						echo '<td class="topic"><p class="topic_info">'.$line['publish_date'].'</p></td>';
-					}
-				}
-				echo "</tr>";
-			}
-			echo '</table>';
+	else if(isset($_GET['category'])) {
+		if($_GET['category'] == 'home') {
+			$request = $request. 'WHERE visible = 1 AND theme = "rules" OR theme = "announce" OR theme = "changelogs" ORDER BY theme DESC';
+			$title = "Home";
 		}
-		
 		else {
-			$req_count = 'SELECT count(id) AS nb FROM topics WHERE theme ="'.$_GET["category"].'"';
-			$req_creation_date = 'SELECT creation_date FROM topics WHERE theme ="'.$_GET["category"].'" ORDER BY creation_date DESC LIMIT 1';
-			$result_count = $connBDD->query($req_count);
-			$result_creation_date = $connBDD->query($req_creation_date);
-
-			$count = $result_count->fetch();
-			$line = $result_creation_date->fetch();
-			if($count['nb'] == '') {
-				echo '<p class="login_failed">No topic has been found</p>';
-			}
-			else {
-				echo '	<table class="topic_category">
-							<tr style="background-color: #009996">
-								<th colspan="4">'
-									.$_GET['category'].	
-								'</th>
-								<th colspan="2">
-									Number of articles : '.$count['nb'].'
-								</th>
-								<th colspan="2">
-									Last article : '.$line['creation_date'].'
-								</th>
-							</tr>
-						</table>';
-
-				topicTableTop();
-				$req = 'SELECT id,topic_name,nb_message,topic_owner FROM topics WHERE theme ="'.$_GET["category"].'" ORDER BY creation_date';
-				$results = $connBDD->query($req);
-				
-
-				$tab = $results->fetchAll(PDO::FETCH_ASSOC);
-				foreach ($tab as $key => $value) {
-					echo "<tr>";
-					foreach ($tab[$key] as $keys => $values) {
-						if($keys == "id") {
-							$id = $values;
-							$req_last_msg = 'SELECT publish_date FROM messages WHERE id_topic ='.$id.' ORDER BY publish_date DESC LIMIT 1';
-							$results_last_msg = $connBDD->query($req_last_msg);
-							$line = $results_last_msg->fetch();
-						}
-						else if($keys == "topic_name") {
-							$topic_pic = topic_folder($values);
-							echo '	<td class="topic"><img src="'.$topic_pic.'" class="topic_folder"></td>
-									<td class="topic"><a href="index.php?page=topic&value='.$id.'" class="topic_link">'.$values.'</a></td>';
-
-							echo '<td class="topic"><p class="topic_info">'.$tab[$key]['nb_message'].'</p></td>';
-							echo '<td class="topic"><p class="topic_info">'.$line['publish_date'].'</p></td>';
-						}
-						
-					}
-					echo "</tr>";
-				}
-				echo '</table>';
-			}		
+			$request = $request. 'WHERE theme LIKE "%'.$_GET['category'].'%" AND visible = 1 ORDER BY creation_date DESC';
+			$title = $_GET['category'];
 		}
+	}
+	else {
+		$request = $request.'WHERE visible = 1 ORDER BY creation_date DESC';
+	}
+
+	$response = $connex_PDO->query($request);
+	$articles = $response->fetchAll();
+	if(empty($articles)) {
+		?>
+			<p class="failed text-center">No topic found</p>
+		<?php
+	}
+	else {
+		?>
+			<!-- INFO TITLE SECONDARY -->
+			<div class="row" id="category-info">
+				<div class="col-sm-4"><p><?php echo ucfirst($title); ?></p></div>
+				<div class="col-sm-4"><p>Number of articles : <?php echo count($articles); ?></p></div>
+				<div class="col-sm-4"><p>Last article : <?php echo date('d/m/Y',strtotime($articles[count($articles) - 1]['creation_date'])); ?></p></div>
+			</div>
+			<!-- END INFO TITLE SECONDARY -->
+
+			<br/>
+
+			<!-- TOPICS -->
+			<div class="row">
+				<div class="col-sm-11" id="topics">
+					<table>
+						<thead>
+							<tr>
+								<th scope="col"><p></p></th>
+								<th scope="col"><p>Topic name</p></th>
+								<th scope="col"><p>Number of message</p></th>
+								<th scope="col"><p>Last message</p></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+								foreach ($articles as $key => $value) {
+
+									//Folder icon depending of topic creation date or completed state
+									$countDay = date_diff(date_create(date('Y-m-d')),date_create($articles[$key]['creation_date']))->format('%d');
+									//An topic is considered as "new" if it's less than 7 days old.
+									if($articles[$key]['complete'] == 1) {
+										$src_folder = "complete";
+									}
+									else if($countDay > 7) {
+										$src_folder = "default";
+									}
+									else {
+										$src_folder = "new";
+									}
+									?>
+									<!-- ARTICLE -->
+									<tr data-id="<?php echo $articles[$key]['id']; ?>">
+										<th scope="row" class="folder-area"><img class="topic_folder" src="images/folders/<?php echo $src_folder; ?>.png" alt="icon-folder"></th>
+										<td class="topic-name">
+											<?php
+												if(isset($_GET['category']) OR isset($_POST['search'])) {
+													?>
+													<span><?php echo $articles[$key]['topic_name']; ?></span>
+													<?php
+												}
+												else {
+													?>
+													<span><?php echo $articles[$key]['topic_name'].' <i>['.$articles[$key]['theme'].']</i>'; ?></span>
+													<?php
+												}
+											?>
+										</td>
+										<td>
+											<?php
+												$requetes_messages = $connex_PDO->query('SELECT count(*) AS count_msg FROM messages WHERE id_topic = '.$articles[$key]['id'].' AND visible = 1');
+												$count = $requetes_messages->fetch();
+											?>
+											<span><?php echo $count['count_msg']; ?></span>
+										</td>
+										<td>
+											<?php
+												$req_last_msg = $connex_PDO->query('SELECT publish_date FROM messages WHERE id_topic ='.$articles[$key]['id'].' ORDER BY publish_date DESC LIMIT 1');
+												$last_msg = $req_last_msg->fetch();
+											?>
+											<span><?php echo date('d/m/Y H:i',strtotime($last_msg[0])); ?></span>
+										</td>
+									</tr>
+									<!-- END ARTICLE -->
+									<?php
+								}
+							?>
+						</tbody>
+					</table>
+				
+		
+				</div>
+			</div>
+			<!-- END TOPICS -->
+		<?php
 	}
 ?>
+</div>
+<!-- END CONTENT -->
 
-<style type="text/css">
-	table.topic_category {
-		width:	80%;
-		margin:	10;
-	}
-
-	table.topics {
-		width: 	90%;
-		margin: 20;
-		padding-left: 10px;
-	}
-
-	td#corner {
-		background:			linear-gradient(to top right,rgba(109, 225, 255, 0.5),rgba(0, 153, 150, 0.5));
-	}
-
-	td.topic_folder {
-		padding-left: 		10px;
-		align-content: 		center;
-	}
-
-	a.topic_link {
-		color: 				white;
-		text-decoration: 	none;
-	}
-
-	td.topic {
-		background-color: 	#6de1ff;
-		text-align: 		center;
-	}
-
-	p.topic_info {
-		color: white;
-		text-align: center;
-	}
-
-	img.topic_folder {
-		margin: auto;
-		width: 	20px;
-		height: 20px;
-	}
-
-	.topic_action {
-		font-weight: bold;
-	}
-
-	hr {
-		margin-left: 5px;
-		width: 80%;
-		height: 2px;
-		border-radius: 30px;
-		background-color: white;
-	}
-
-</style>
+<script>
+	//Trigger tr as a href
+	$('#topics > table > tbody > tr').click(function() {
+		console.log('POP');
+		window.location.href = 'index.php?page=topic&value=' + $(this).data("id");
+	});
+</script>

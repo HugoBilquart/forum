@@ -1,0 +1,171 @@
+#forum-home-top {
+    padding-left: 3%;
+}
+
+#forum-home-top a {
+    text-indent: 1%;
+}
+
+#forum-home-top hr {
+    margin-left: 5px;
+    width: 80%;
+    height: 2px;
+    border-radius: 30px;
+    background-color: white;
+}
+
+#category-info {
+    background-color: #009996;
+}
+
+#category-info div p {
+    text-align: center;
+    width: 100%;   
+}
+
+#topics {
+    margin: auto;
+}
+
+#topics table {
+    width: 100%;
+}
+
+#topics thead {
+    text-align: center;
+    background-color: #009996;
+}
+
+#topics tbody {
+    background-color: #6DE1FF;
+}
+
+#topics tbody td.topic-name {
+    text-align: left;
+}
+
+#topics tbody td.topic-name i {
+    font-size: small;
+    font-weight: bold;
+}
+
+#topics tbody tr {
+    cursor: pointer;
+}
+
+#topics tbody tr:hover {
+    background-color: #42d9ff;
+}
+
+#topics tbody td {
+    text-align: center;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+}
+
+#topics tbody th.folder-area {
+    padding-left: 0.5%;
+}
+
+img.topic_folder {
+    width: 	20px;
+    height: 20px;
+}
+
+
+/* NEW TOPIC */
+
+#newTopic {
+    margin: auto;
+}
+
+form#newTopicArea {
+    margin: 	auto;
+    width: 		90%;
+}
+
+textarea#newMessageArea {
+    resize: none;
+    text-indent: 0px;
+    width: 90%; 
+
+    margin: 	auto;
+}
+/* END NEW TOPIC */
+
+/* TOPIC */
+
+#home_button {
+	height: 20px;
+	width: 	20px;
+}
+
+.topic-message {
+    margin: auto;
+    background-color: rgba(102,102,102,0.4);
+}
+
+.topic-message:hover {
+    background-color: rgb(102,102,102); 
+}
+
+.deleted-message {
+    margin: auto;
+    background-color: rgba(41, 41, 41, 0.4);
+}
+
+.name-area {
+    border-right: solid 1px white;
+}
+
+.topic-pp-area {
+    text-align: center;
+    padding: 0;
+    border-right: solid 1px white;
+}
+
+img.topic_pp {
+    float: left;
+    width: 100%;
+    margin: 0;
+}
+
+.date-area {
+    border-left: solid 1px white;
+    border-right: solid 1px white;
+    border-bottom: solid 1px white;
+}
+
+.topic-msg-content p {
+    padding: 2%;
+}
+
+.signature-area hr {
+    width: 90%;
+    margin: auto;
+}
+
+.signature-area span {
+    padding: 5%;
+}
+
+.signature-area a {
+    color: #00b2ff;
+}
+
+.empty {
+    border-right: solid 1px white;
+}
+
+#topic_msg_denied {
+	background: linear-gradient(to right top, maroon, red);
+    margin: auto;
+    text-align: center;
+}
+
+#topic_msg_denied p {
+    padding: 0.5%;
+    font-weight: bold;
+}
+
+/* END TOPIC */

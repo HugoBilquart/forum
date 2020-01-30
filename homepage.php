@@ -1,75 +1,85 @@
-<p class="forum_welcome">Welcome on IT Solutions</p>
+<h1 class="page_name">Welcome on IT Solutions</h1>
 <hr>
 
-<table style="margin: auto; width: 90%;">
-	<tr>
-		<td style="padding-top: 2%; padding-bottom: 2%;" colspan="2">
-			<table class="homepage_table">
-				<tr>
-					<th>
-						Last post ✉
-					</th>
-				</tr>
-				<tr>
-					<td>
-						<?php $info = lastMessage(); ?>
-						<table width="100%">
-							<tr>
-								<?php echo '<td colspan="3"><a href="index.php?page=forum&category='.$info['theme'].'">'.$info["theme"].'</a> > <a href="index.php?page=topic&value='.$info['id'].'">'.$info["topic_name"].'</a></td>'; ?>	
-							</tr>
-							<tr>
-								<?php
-								echo '	<td class="homepage_pp_area" colspan="1">
-											<a href="index.php?page=profile&user='.$info["name"].'" title="View profile of '.$info["name"].'"><img src="'.$info['profile_pic'].'" class="lastRegistered_pp" alt="'.$info['profile_pic'].'"></a>
-											<span>'.$info['name'].'</span>
-										</td>';
-								if(strlen($info["content"]) > 50) {
-									$info["content"] = substr($info["content"],0,50);
-									echo '<td colspan="2"><p>'.$info["content"].'...<a href="index.php?page=topic&value='.$info['id'].'" title="View full message in topic">[Read more]</a></p></td>';
-								}
-								else {
-									echo '<td colspan="2"><p>'.$info["content"].'</p></td>';
-								}
-								?>
-							</tr>
-							<tr>
-								<?php echo '<th colspan="2">'.$info['publish_date'].'</th>'; ?>
-							</tr>
-						</table>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>	
-	<tr>
-		<td style="padding-top: 2%; padding-bottom: 2%;">
-			<table class="homepage_table">
-				<tr>
-					<th>
-						Birthday 🎂
-					</th>
-				</tr>
-				<tr>
-					<td>
-						<p>Today is birthday of <?php birthday(); ?>
-					</td>
-				</tr>
-			</table>
-		</td>
+<h2>Here're some informations about the forum</h2>
 
-		<td style="padding-top: 2%; padding-bottom: 2%;">
-			<table class="homepage_table">
-				<tr>
-					<th>
-						Last registered member
-					</th>
-				</tr>
-				<tr>
-					<td>
-						<?php lastRegistered(); ?>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-</table>
+<div class="col-sm-12">
+	<?php $info = lastMessage(); ?>
+	<table class="table table-dark table-bordered homepage-table">
+		<thead>
+			<tr>
+				<th scope="col">
+					<span>Last post ✉ :</span>
+					<span>
+						<?php echo $info['publish_date']; ?>
+					</span>
+				</th>
+			</tr>
+			<tr>
+				<th scope="row">
+					
+					<a class="homepage-link" href="index.php?page=forum&category=<?php echo $info['theme']; ?>">
+						<?php echo $info["theme"]; ?>
+					</a> 
+					<b> > </b> 
+					<a class="homepage-link" href="index.php?page=topic&value=<?php echo $info['id']; ?>">
+						<?php echo $info["topic_name"]; ?>
+					</a>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<img src="<?php echo $info['profile_pic']; ?>" class="lastRegistered_pp" alt="<?php echo $info['profile_pic']; ?>">
+					<span><?php echo $info['name']; ?></span>
+					<p><?php echo $info["content"]; ?></p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="col-sm-6">
+	<table class="table table-dark table-bordered homepage-table">
+		<thead>
+			<tr>
+				<th scope="row">
+					Birthday 🎂
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<p>Today is birthday of <?php birthday(); ?>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="col-sm-6">
+	<?php $info = lastRegistered(); ?>
+	<table class="table table-dark table-bordered homepage-table">
+		<thead>
+			<tr>
+				<th scope="row">
+					Last registered member : <?php echo $info["registration_date"]; ?>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<img src="<?php echo $info['profile_pic']; ?>" class="lastRegistered_pp" alt="<?php echo $info['profile_pic']; ?>">
+					<span>
+						<a class="homepage-link" href="index.php?page=profile&user=<?php echo $info['name']; ?>">	
+							<?php echo $info['name']; ?>
+						</a>
+					</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

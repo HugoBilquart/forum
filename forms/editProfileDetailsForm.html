@@ -1,73 +1,56 @@
-<tr>
-	<th colspan="4" class="editProfileForm">
-		<center>
-			<p style="text-align:center;">
-				Edit profile page
-			</p>
-		</center>
-	</th>
-</tr>
-<tr>
-	<td> 
-		- Country
-	</td>
- 	<td>
- 		<select name="editCountry">
-			<option value="" selected>No change</option>
-			<option value="France">France</option>
-			<option value="England">England</option>
-			<option value="Canada">Canada</option>
-			<option value="USA">USA</option>
-			<option value="Elsewhere">Elsewhere</option>
-			<option value="System">System</option>
-			<option value="delete">DELETE</option>
-		</select>
-	</td>
+<div class="form-group col-md-6 form-part">
+	<p><label for="editCountry">Country</label></p>
+	<select name="editCountry" id="editCountry" class="form-control">
+		<option value="" selected>No change</option>
+		<option value="France">France</option>
+		<option value="England">England</option>
+		<option value="Canada">Canada</option>
+		<option value="USA">USA</option>
+		<option value="Elsewhere">Elsewhere</option>
+		<option value="System">System</option>
+		<option value="delete">DELETE</option>
+	</select>
+</div>
+<div class="col-md-1"></div>
+<div class="form-group col-md-5 form-part">
+	<p><label>Birth date</label></p>
+	<select id="birth_day" class="birthday" name="birth_day">
+		<option value="" selected>...</option>
+		<script type="text/javascript">
+			for(var i = 1 ; i <= 31 ; i++) {
+				if (i < 10) document.write("<option value=\""+i+"\">0"+i+"</option>");
+				else document.write("<option value=\""+i+"\">"+i+"</option>");
+			}
+		</script>
+		<option value="del">DELETE</option>
+	</select>
+	<select id="birth_month" class="birthday" name="birth_month">
+		<option value="" selected>...</option>
+		<script type="text/javascript">
+			for(var i = 1 ; i <= 12 ; i++) {
+				if (i < 10) document.write("<option value=\""+i+"\">0"+i+"</option>");
+				else document.write("<option value=\""+i+"\">"+i+"</option>");
+			}
+		</script>
+		<option value="del">DELETE</option>
+	</select>
+		
+	<select id="birth_year" name="birth_year" class="birthday">
+		<option value="" selected>...</option>
+		<script>
+			var d = new Date;
+			var ageMini = 1;
+			var ageMaxi = 100;
+			for(var i=d.getFullYear()-ageMini ; i > d.getFullYear() - ageMaxi ; i--) 
+			{
+				document.write("<option value=\""+i+"\">"+i+"</option>");
+			}
+		</script>
+		<option value="del">DELETE</option>
+	</select>
+	<p><i>TIPS : Select <...> for no change or DELETE options to delete your birth date</i></p>
+</div>
 
-	 <td>
-	 	<li>
-	 		<p>
-	 			Birthdate (... = no change)
-	 		</p>
-	 	</li>
-	 </td>
-	 <td>
-		<select id="birth_day" class="birthday" name="birth_day">
-			<option value="" selected>...</option>
-			<script type="text/javascript">
-				for(var i = 1 ; i <= 31 ; i++) {
-			    	if (i < 10) document.write("<option value=\""+i+"\">0"+i+"</option>");
-			    	else document.write("<option value=\""+i+"\">"+i+"</option>");
-			    }
-			</script>
-			<option value="del">DELETE</option>
-		</select>
-		<select id="birth_month" class="birthday" name="birth_month">
-			<option value="" selected>...</option>
-			<script type="text/javascript">
-				for(var i = 1 ; i <= 12 ; i++) {
-			    	if (i < 10) document.write("<option value=\""+i+"\">0"+i+"</option>");
-			    	else document.write("<option value=\""+i+"\">"+i+"</option>");
-				}
-			</script>
-			<option value="del">DELETE</option>
-		</select>
-			
-		<select id="birth_year" name="birth_year" class="birthday">
-			<option value="" selected>...</option>
-			<script>
-				var d = new Date;
-              	var ageMini = 1;
-              	var ageMaxi = 100;
-              	for(var i=d.getFullYear()-ageMini ; i > d.getFullYear() - ageMaxi ; i--) 
-              	{
-              		document.write("<option value=\""+i+"\">"+i+"</option>");
-              	}
-            </script>
-            <option value="del">DELETE</option>
-		</select>
-	</td>
-</tr>
 
 <script type="text/javascript">
 	

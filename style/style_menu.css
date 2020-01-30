@@ -1,55 +1,56 @@
-#bandeauMenu {
-    z-index:                    20;
-    width: 						100%;
-
-    /*position: 					absolute;*/
+nav {
+	width: 			100%;
+	background: 	linear-gradient(to right top, black, red);
+	text-align: center;
 }
 
-dl.indexTabMenu {
-	background: 				  	linear-gradient(to right top, black, red);
-	text-align: 				  	center;
-	width: 						  	25%;
-	float:              		 	left;
-
-	position:                   	relative;
-    display: 						inline-block;
+#home-icon img {
+	height: 35px;
 }
 
-dt {
-	margin:                     20px;
-	-moz-transition-property:   background-color;
-    -moz-transition-duration:   1s;
-
+.navbar-collapse, .navbar-nav li {
+	float: left;
+	text-align: left;
 }
 
-dd {
-	display:                  none;
-
-	margin-right:             auto;
-    margin-left:              auto;
-    margin: 			      20px;
-    z-index:                  10;
-    text-align:               center;
-
-    -moz-transition-property:   background-color;
-    -moz-transition-duration:   1s;
+.dropdown-menu {
+	background: 	linear-gradient(to right top, black, red);
 }
 
-dl:hover dd {
-    display:                  block;
+.navbar .nav-item:not(:last-child) {
+	margin-right: 35px;
 }
 
-a.liensTabMenu {
+.dropdown-toggle::after {
+	transition: transform 0.15s linear; 
+}
+
+.show.dropdown .dropdown-toggle::after {
+	transform: translateY(3px);
+}
+
+a.navbar-brand {
+	color: rgb(0, 153, 255);
+}
+
+a.nav-link {
 	color: 						white;
 	text-decoration: 			none;
-	-moz-transition-property:   color;
-    -moz-transition-duration:   1s;
+	transition-property:   		color;
+    transition-duration:   		1s;
 }
 
-a.liensTabMenu:hover {
+a.nav-link:hover {
 	color: 						red;
 }
 
-dt:hover,dd:hover {
-	background-color: 		linear-gradient(to right top, red, black);
+a.dropdown-item {
+	color: 						white;
+	text-decoration: 			none;
+	transition-property:   		color;
+    transition-duration:   		0.5s;
+}
+
+a.dropdown-item:hover {
+	color: 						gold;
 }

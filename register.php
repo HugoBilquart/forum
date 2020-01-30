@@ -2,54 +2,87 @@
 	if($_SESSION) {
 		echo '<script type="text/javascript"> window.location = "index.php?page=home"; </script>';
 	}
-?>
-
-			<?php include('forms/registerForm.html'); ?>
-			<?php
-				if($_POST) {
-					if($_POST['submit'] == 'Register') {
-						$checkFormAgain = checkFormAgain(); 
-						echo "<p>Request of registration : ";
-						if(empty($_POST['newNickname']) OR empty($_POST['newEmail']) OR empty($_POST['newPass']) OR empty($_POST['newPassConfirm'])) {
-							echo "<span class='loginFailed'>FAILED</span></p>";
-							echo "<p class='loginFailed'>You didn't filled every required field</p>";
+	else {
+		?>
+		<div class="col-md-12">
+		<?php
+		if($_POST) {
+			if($_POST['submit'] == 'Register') {
+				echo "<p>Request of registration : ";
+				if(empty($_POST['newNickname']) OR empty($_POST['newEmail']) OR empty($_POST['newPass']) OR empty($_POST['newPassConfirm']) OR empty($_POST['rulesConfirm'])) {
+					?>
+					<span class='failed'>FAILED</span></p>
+					<p class='failed'>You didn't fill every required field</p>
+					<?php
+				}
+				else {
+					if(strlen($_POST['newNickname']) < 4) {
+						?>
+						<span class='failed'>FAILED</span></p>
+						<p class='failed'>Your username must be at least 4 characters long.</p>
+						<?php
+					}
+					else if(strlen($_POST['newPass']) < 6) {
+						?>
+						<span class='failed'>FAILED</span></p>
+						<p class='failed'>Your password must be at least 6 characters long.</p>
+						<?php
+					}
+					else if($_POST['newPass'] != $_POST['newPassConfirm']) {
+						?>
+						<span class='failed'>FAILED</span></p>
+						<p class='failed'>Your password and the confirmation don't match.</p>
+						<?php
+					}
+					else {
+						//Check if username or email address is already used
+						$requestDouble = $connex_PDO->query('SELECT * FROM users WHERE `name` = "'.$_POST['newNickname'].'" OR `email` = "'.$_POST['newEmail'].'"');
+						$doubleAccount = $requestDouble->fetchAll();
+						if(count($doubleAccount) > 0) {
+							?>
+							<span class='failed'>FAILED</span></p>
+							<p class='failed'>Your username or email address is already used.</p>
+							<?php
 						}
 						else {
-
-
-							$newUser_nickname = $_POST['newNickname'];
-							$newUser_email = $_POST['newEmail'];
-
-							
-							echo "<span class='loginDone'>SUCCESS</span></p>";
-							$newUser_country = $_POST['newCountry'];
-							$newUser_PP = createNewAvatar($newUser_nickname);
+							//Create new user
+							$newUser_PP = createNewAvatar($_POST['newNickname']);
 							$newUser_birth_date = $_POST['birth_day'].'/'.$_POST['birth_month'].'/'.$_POST['birth_year'];
 							if($newUser_birth_date == '//') {
 								$newUser_birth_date = '';
 							}
-							$registration_date = date('d/m/Y');
-
-							$newUser_pass = $_POST['newPass'];
-							
-							$connBDD = DBConnection();
-							$reqNum = 'SELECT MAX(id)+1 FROM users';
-							$callBack = $connBDD->query($reqNum);
-							if($callBack) {
-								$nbUser = $callBack->fetchColumn();
-							}
-							$req = 'INSERT INTO users (id,name,password,email,role,profile_pic,country,birth_date,registration_date,isMuted) VALUES ("'.$nbUser.'","'.$newUser_nickname.'","'.$newUser_pass.'","'.$newUser_email.'","1","'.$newUser_PP.'","'.$newUser_country.'","'.$newUser_birth_date.'","'.$registration_date.'","0")';
-							$results = $connBDD->exec($req);
-							if($results) {
-								echo "<p class='loginDone'>Your registration is complete</p>";
+							if(empty($_POST['newCountry'])) {
+								$country = '';
 							}
 							else {
-								echo "<p class='loginFailed'>Your registration failed</p>";
+								$country = $_POST['newCountry'];
+							}
+							$registration_date = date('d/m/Y');
+
+							include("hash.php");
+							$hashed_password = crypt(''.$_POST['newPass'].'', "$hash");
+				
+							$requestNewUser = $connex_PDO->query('INSERT INTO users (name,password,email,role,profile_pic,country,birth_date,registration_date,isMuted) VALUES ("'.$_POST['newNickname'].'","'.$hashed_password.'","'.$_POST['newEmail'].'","1","'.$newUser_PP.'","'.$country.'","'.$newUser_birth_date.'","'.$registration_date.'","0") ');
+							if($requestNewUser) {
+								?>
+								<span class='loginDone'>SUCCESS</span></p>
+								<p class='success'>Your registration is complete</p>
+								<?php
+							}
+							else {
+								?>
+								<span class='failed'>FAILED</span></p>
+								<p class='failed'>Your registration failed</p>
+								<?php
 							}
 						}
 					}
 				}
-			?>
+			}
+		}
+		?>
 		</div>
-	</fieldset>
-</form>
+		<?php
+		include('forms/registerForm.html');	
+	}
+?>

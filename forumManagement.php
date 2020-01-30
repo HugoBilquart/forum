@@ -1,14 +1,8 @@
+<div class="col-md-12">
 <?php
 	if($_SESSION) {
-		if ($_SESSION['role'] == 'moderator' || $_SESSION['role'] == 'admin') {
-			echo '<p class="page_name">Forum management page</p>';
-			$req_topic_removable = 'SELECT topics.id,topic_name,topic_owner,role,nb_message FROM topics INNER JOIN users ON topics.id = users.id WHERE users.role < 3';
-			$results_topic_removable = $connBDD->query($req_topic_removable);
-			$tab_removable = $results_topic_removable->fetchAll(PDO::FETCH_ASSOC);
-
-			$req_topic_not_complete = 'SELECT topics.id,topic_name,topic_owner,role,nb_message FROM topics INNER JOIN users ON topics.id = users.id WHERE users.role < 3 AND complete = 0';
-			$results_topic_not_complete = $connBDD->query($req_topic_not_complete);
-			$tab_not_complete = $results_topic_not_complete->fetchAll(PDO::FETCH_ASSOC);
+		if ($_SESSION['role'] > 1) {
+			echo '<h1 class="page_name">Forum management page</h1>';
 		}
 		else {
 			echo "<script type='text/javascript'> window.location = 'index.php?page=home'; </script>";
@@ -17,18 +11,18 @@
 	else {
 		echo "<script type='text/javascript'> window.location = 'index.php?page=home'; </script>";
 	}
-
+?>
+</div>
+<div class="col-md-12 text-center">
+<?php
 	if($_POST) {
 		if($_POST['action'] == '🗑') {
-			echo 'Topic n° '.$_POST['topicToDelete'];
-			$req_delete_messages = 'DELETE FROM messages WHERE id_topic = '.$_POST['topicToDelete'];
-			$result_delete_messages = $connBDD->exec($req_delete_messages);
-			if($result_delete_messages) {
-				echo '<p class="loginDone">Messages of topic n°'.$_POST['topicToDelete'].' deleted</p>';
-				$req_delete_topic = 'DELETE FROM topics WHERE id = '.$_POST['topicToDelete'];
-				$result_delete_topic = $connBDD->exec($req_delete_topic);
-				if($result_delete_topic) {
-					echo '<p class="loginDone">Topic n°'.$_POST['topicToDelete'].' deleted</p>';
+			$request_delete_messages = $connex_PDO->exec('UPDATE messages SET visible = 0 WHERE id_topic = '.$_POST['topicToDelete']);
+			if($request_delete_messages) {
+				echo '<p class="loginDone">Messages of topic n°'.$_POST['topicToDelete'].' are no longer visible on the forum</p>';
+				$request_delete_topic = $connex_PDO->exec('UPDATE topics SET visible = 0 WHERE id = '.$_POST['topicToDelete']);
+				if($request_delete_topic) {
+					echo '<p class="loginDone">Topic n°'.$_POST['topicToDelete'].' is no longer visible on the forum</p>';
 				}
 				else {
 					echo '<p class="loginFailed">Failed to delete topic</p>';
@@ -39,132 +33,124 @@
 			}
 		}
 		else if($_POST['action'] == '✔') {
-			echo 'Topic n° '.$_POST['topicToComplete'];
-			$req_complete_topic = 'UPDATE topics SET complete = 1 WHERE id = '.$_POST['topicToComplete'];
-			$result_complete_topic = $connBDD->exec($req_complete_topic);
-			if($result_complete_topic) {
+			$request_complete_topic = $connex_PDO->exec('UPDATE topics SET complete = 1 WHERE id = '.$_POST['topicToComplete']);
+			if($request_complete_topic) {
 				echo '<p class="loginDone">Topic n°'.$_POST['topicToComplete'].' is complete</p>';
 			}
 			else {
 				echo '<p class="loginFailed">Failed to change topic n°'.$_POST['topicToComplete'].'\'s state</p>';
 			}
 		}
-		else if($_POST['action'] == '❌') {
-			echo $_POST['messageToDelete'];
-			$req = 'DELETE FROM messages WHERE id ='.$_POST['messageToDelete'];
-			$results = $connBDD->exec($req);
+		else if($_POST['action'] == '✘') {
+			$results = $connex_PDO->exec('UPDATE messages SET visible = 0 WHERE id = '.$_POST['messageToDelete']);
 			if($results) {
-				echo 'Message n°'.$_POST['messageToDelete'].' deleted';
+				echo '<p class="success">Message n°'.$_POST['messageToDelete'].' is no longer visible in selected topic</p>';
 			}
 			else {
-				echo 'Failed to delete message';
+				echo '<p class="failed">Failed to delete message</p>';
 			}
 		}
 	}
-?>
+	$request_topic_removable = $connBDD->query('SELECT topics.id,topic_name,topic_owner,creation_date,role FROM topics INNER JOIN users ON topics.id = users.id WHERE users.role < 3');
+	$tab_removable = $request_topic_removable->fetchAll(PDO::FETCH_ASSOC);
 
-<form method="POST">
-	<table id="forumManagement_table">
-		<tr class="forumManagement_td">
-			<td class="forumManagement_td">
-				<table class="forumManagement_underTable">
-					<tr>
-						<th colspan="2"><p>Delete topic</p></th>
-					</tr>
-					<tr>
-						<td>
-							<select name="topicToDelete">
-								<option value="">Select a topic</option>
-								<?php
-									foreach ($tab_removable as $key => $values) {
-										echo '<option value="'.$tab_removable[$key]['id'].'">N°'.$tab_removable[$key]['id'].' - '.$tab_removable[$key]['topic_name'].' | By '.$tab_removable[$key]['topic_owner'].' | '.$tab_removable[$key]['nb_message'].' message(s)</option>';
-									}
-								?>
-							</select>
-						</td>
-						<td>
-							<input type="submit" class="action_button" name="action" value="🗑" title="Delete selected topic">
-						</td>
-					</tr>
-				</table>
-			</td>
-			<td class="forumManagement_td">
-				<table class="forumManagement_underTable">
-					<tr>
-						<th colspan="2"><p>Turn a topic on 'completed' state</p></th>
-					</tr>
-					<tr>
-						<td>
-							<select name="topicToComplete">
-								<option value="">Select a topic</option>
-								<?php
-									foreach ($tab_not_complete as $key => $values) {
-										echo '<option value="'.$tab_not_complete[$key]['id'].'">N°'.$tab_not_complete[$key]['id'].' - '.$tab_not_complete[$key]['topic_name'].' | By '.$tab_not_complete[$key]['topic_owner'].' | '.$tab_not_complete[$key]['nb_message'].' message(s)</option>';
-									}
-								?>
-							</select>
-						</td>
-						<td>
-							<input type="submit" class="action_button" name="action" value="✔" title="Turn selected topic on 'completed' state">
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td class="forumManagement_td" colspan="2">
-				<table class="forumManagement_underTable">
-					<tr>
-						<th colspan="2"><p>Delete a message from a topic</p></th>
-					</tr>
-					<tr>
-						<td>
-							<select name="topicToEdit">
-								<option value="">Select a topic</option>
-								<?php
-									foreach ($tab_removable as $key => $values) {
-										echo '<option value="'.$tab_removable[$key]['id'].'">N°'.$tab_removable[$key]['id'].' - '.$tab_removable[$key]['topic_name'].' | By '.$tab_removable[$key]['topic_owner'].' | '.$tab_removable[$key]['nb_message'].' message(s)</option>';
-									}
-								?>
-							</select>
-						</td>
-						<td>
-							<input type="submit" class="action_button" name="action" value="🔍" title="Get messages of selected topic">
-						</td>
-					</tr>
-				</table>
-				<table class="forumManagement_underTable">
-					<tr>
-						<th colspan="2"><p>Select message to delete</p></th>
-					</tr>
-					<tr>
-						<td>
-							<select name="messageToDelete">
-								<option value="">Select a message</option>
-								<?php
-									if($_POST) {
-										if($_POST['action'] == '🔍') {
-											echo $_POST['topicToEdit'];
-											$req_messages = 'SELECT id,id_user,publish_date FROM messages WHERE id_topic = '.$_POST['topicToEdit'];
-											$results_messages = $connBDD->query($req_messages);
-											$tab_messages = $results_messages->fetchAll(PDO::FETCH_ASSOC);
-											foreach ($tab_messages as $key => $value) {
-												echo '<option value="'.$tab_messages[$key]['id'].'">N°'.$tab_messages[$key]['id'].' | By '.$tab_messages[$key]['id_user'].' | '.$tab_messages[$key]['publish_date'].'</option>';
-											}
-										}
-									}
-								?>
-							</select>
-						</td>
-						<td>
-							<input type="submit" class="action_button" name="action" value="❌" title="Delete message of selected topic">
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-</form>
+	$request_topic_not_complete = $connBDD->query('SELECT topics.id,topic_name,topic_owner,creation_date,role FROM topics INNER JOIN users ON topics.id = users.id WHERE users.role < 3 AND complete = 0');
+	$tab_not_complete = $request_topic_not_complete->fetchAll(PDO::FETCH_ASSOC);
+?>
+</div>
+
+<div class="col-md-12">
+	<form method="POST">
+		<div class="row">
+			<div class="col-md-5 form-part text-center">
+				<p><label for="topicToDelete">Delete topic</label></p>
+				<select id="topicToDelete" name="topicToDelete" class="form-control">
+					<option value="">Select a topic</option>
+					<?php
+						foreach ($tab_removable as $key => $values) {
+							echo '<option value="'.$tab_removable[$key]['id'].'">#'.$tab_removable[$key]['id'].' - '.$tab_removable[$key]['topic_name'].' | By '.$tab_removable[$key]['topic_owner'].' | '.date('d/m/Y',strtotime($tab_removable[$key]['creation_date'])).'</option>';
+						}
+					?>
+				</select>
+				<br/>
+				<input type="submit" class="action_button" name="action" value="🗑" title="Delete selected topic">
+			</div>
+
+			<div class="col-md-2"></div>
+
+			<div class="col-md-5 form-part text-center">
+				<p><label for="topicToDelete">Turn a topic on <b>completed</b> state</label></p>
+				<select name="topicToComplete" class="form-control">
+					<option value="">Select a topic</option>
+					<?php
+						foreach ($tab_not_complete as $key => $values) {
+							echo '<option value="'.$tab_not_complete[$key]['id'].'">N°'.$tab_not_complete[$key]['id'].' - '.$tab_not_complete[$key]['topic_name'].' | By '.$tab_not_complete[$key]['topic_owner'].' | '.date('d/m/Y',strtotime($tab_removable[$key]['creation_date'])).'</option>';
+						}
+					?>
+				</select>
+				<br/>
+				<input type="submit" class="action_button" name="action" value="✔" title="Turn selected topic on 'completed' state">
+			</div>
+
+			<div class="col-md-12"><br/></div>
+
+			<div class="col-md-12 form-part text-center">
+				<p><label>Delete a message from a topic</label></p>
+				<select id="topicToEdit" name="topicToEdit" class="form-control">
+					<option value="">Select a topic</option>
+					<?php
+						foreach ($tab_removable as $key => $values) {
+							echo '<option value="'.$tab_removable[$key]['id'].'|'.$tab_removable[$key]['topic_name'].'">#'.$tab_removable[$key]['id'].' - '.$tab_removable[$key]['topic_name'].' | By '.$tab_removable[$key]['topic_owner'].' | '.date('d/m/Y',strtotime($tab_removable[$key]['creation_date'])).'</option>';
+						}
+					?>
+				</select>
+				<br/>
+				<input type="button" id="searchMessages" class="action_button" name="action" value="🔍" title="Get messages of selected topic">
+				<hr>
+				<div class="row" id="selectedTopic">
+					<p id="selectedTopicName"></p>
+					<div class="col-sm-12" id="selectedTopicMessages">
+						<p><label>Select message to delete</label></p>
+						<select id="selectedTopicSelect" name="messageToDelete"></select>
+						<input type="submit" class="action_button" name="action" value="✘" title="Delete message of selected topic">
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+
+<script>
+
+	
+
+	$('#searchMessages').click(function(){
+		$topicToEdit = $('#topicToEdit').val().split('|');
+		$('#selectedTopicSelect').html('');
+		
+		$.ajax({
+			url: 'script/getTopicMessages.php',
+			method: "GET",
+			data: {
+				topic : $topicToEdit[0]
+			},
+			success:function(data){
+				$msg = data;
+				console.log($msg);
+				$('#selectedTopic').css('display','block');
+				$('#selectedTopicName').html($topicToEdit[1]);
+
+				for(var i = 0; i < $msg.length; i++) {
+					var content = $msg[i]['content'].substring(0,20);
+					document.getElementById('selectedTopicSelect').innerHTML += '<option value="'+$msg[i]['message']+'">' + $msg[i]['name'] + ' : ' + content + '</option>';
+				}
+				$('#selectedTopic').css('display','block');
+			},
+			dataType:"json"
+		});
+	});
+
+</script>
 
 <style type="text/css">
 	
@@ -187,6 +173,10 @@ td.forumManagement_td, tr.forumManagement_td{
 	padding: 5px;
 	text-align: center;
 } 
+
+#selectedTopic {
+	display: none;
+}
 
 .action_button {
 	font-weight: bold;
