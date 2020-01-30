@@ -1,4 +1,4 @@
-#!/bin/bash
+Permissions for database and content :
 
 sudo chown www-data:www-data /var/www/html
 sudo chmod -R 775 /var/www/html/projet
