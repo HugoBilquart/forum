@@ -15,32 +15,6 @@
 			}
 		}
 	}
-
-
-	/*if(isset($_GET['orderby']) || isset($_GET['desc'])) {
-		if(isset($_GET['orderby']) && isset($_GET['desc'])) {
-			if($_GET['orderby'] != "id" && $_GET['orderby'] != "name" && $_GET['orderby'] != "role") {
-				$req = 'SELECT id,name,role,profile_pic,registration_date FROM users WHERE role != 0';
-			}
-			else {
-				$req = 'SELECT id,name,role,profile_pic,registration_date FROM users WHERE role != 0 ORDER BY '.$_GET['orderby'].' DESC';
-			}
-		}
-		else if(isset($_GET['orderby'])) {
-			if($_GET['orderby'] != "id" && $_GET['orderby'] != "name" && $_GET['orderby'] != "role") {
-				$req = 'SELECT id,name,role,profile_pic,registration_date FROM users WHERE role != 0';		
-			}
-			else {	
-				$req = 'SELECT id,name,role,profile_pic,registration_date FROM users WHERE role != 0 ORDER BY '.$_GET['orderby'];
-			}
-		}
-		else {
-			$req = 'SELECT id,name,role,profile_pic,registration_date FROM users WHERE role != 0';
-		}
-	}
-	else {
-		$req = 'SELECT id,name,role,profile_pic,registration_date FROM users WHERE role != 0';
-	}*/
 ?>
 
 <table class="table table-dark table-striped table_memberlist">
