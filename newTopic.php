@@ -108,13 +108,3 @@
 		</div>
 	</form>
 </div>
-
-<?php
-	
-?>
-
-<style type="text/css">
-	
-	
-
-</style>
