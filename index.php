@@ -18,7 +18,6 @@
 		<script src="script/jquery.js"></script>
 		<script src="script/jquery.color.js"></script>
 		<script src="script/jquery.color.svg-names.js"></script>
-		
 	</head>
 	<body>	
 		<div class="container-fluid" id="container">

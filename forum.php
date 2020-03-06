@@ -103,7 +103,9 @@
 								foreach ($articles as $key => $value) {
 
 									//Folder icon depending of topic creation date or completed state
-									$countDay = date_diff(date_create(date('Y-m-d')),date_create($articles[$key]['creation_date']))->format('%d');
+									$difference = strtotime(date('d-m-Y')) - strtotime($articles[$key]['creation_date']);
+									$countDay = abs(round($difference / 86400));
+
 									//An topic is considered as "new" if it's less than 7 days old.
 									if($articles[$key]['complete'] == 1) {
 										$src_folder = "complete";
@@ -135,9 +137,9 @@
 										<td>
 											<?php
 												$requetes_messages = $connex_PDO->query('SELECT count(*) AS count_msg FROM messages WHERE id_topic = '.$articles[$key]['id'].' AND visible = 1');
-												$count = $requetes_messages->fetch();
+												$count = $requetes_messages->fetchColumn();
 											?>
-											<span><?php echo $count['count_msg']; ?></span>
+											<span><?php echo $count; ?></span>
 										</td>
 										<td>
 											<?php

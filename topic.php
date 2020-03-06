@@ -14,7 +14,7 @@
 				echo "<p class='dailed'>This message is already post in the topic (don't flood topics)</p>";
 			}
 			else {
-				$req_new_message = 'INSERT INTO messages(id_topic,id_user,publish_date,content) VALUES ('.$_GET['value'].','.$_SESSION['userID'].',"'.date('d/m/Y H:i:s').'","'.$_POST['newMessageArea'].'")';
+				$req_new_message = 'INSERT INTO messages(id_topic,id_user,publish_date,content) VALUES ('.$_GET['value'].','.$_SESSION['userID'].',"'.date('Y-m-d H:i:s').'","'.$_POST['newMessageArea'].'")';
 				$publish = $connBDD->exec($req_new_message);
 				
 				if($publish) {
